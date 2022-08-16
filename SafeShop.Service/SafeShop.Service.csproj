@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SafeShop.Core\SafeShop.Core.csproj" />
+    <ProjectReference Include="..\SafeShop.Repository\SafeShop.Repository.csproj" />
+  </ItemGroup>
+
 </Project>

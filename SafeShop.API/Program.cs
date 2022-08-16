@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using SafeShop.Repository.DataAccess;
+
 namespace SafeShop.API
 {
     public class Program
@@ -8,6 +11,10 @@ namespace SafeShop.API
 
             // Add services to the container.
 
+            builder.Services.AddDbContext<SafeShopContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("default"));
+            });
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
