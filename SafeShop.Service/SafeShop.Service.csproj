@@ -12,7 +12,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Implementation\" />
+    <Folder Include="DTO\Cart\" />
+    <Folder Include="DTO\CartProduct\" />
+    <Folder Include="DTO\User\" />
   </ItemGroup>
 
 </Project>
