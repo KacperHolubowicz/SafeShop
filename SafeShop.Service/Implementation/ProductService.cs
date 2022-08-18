@@ -1,6 +1,9 @@
-﻿using SafeShop.Repository.Filters;
+﻿using AutoMapper;
+using SafeShop.Core.Model;
+using SafeShop.Repository.Filters;
 using SafeShop.Repository.Infrastructure;
 using SafeShop.Service.DTO.Product;
+using SafeShop.Service.Exceptions;
 using SafeShop.Service.Infrastructure;
 using System;
 using System.Collections.Generic;
@@ -10,39 +13,65 @@ using System.Threading.Tasks;
 
 namespace SafeShop.Service.Implementation
 {
-    //TODO map entity->dto with automapper, maybe its time to finally learn it
     public class ProductService : IProductService
     {
         private readonly IProductRepository productRepository;
+        private readonly IMapper mapper;
 
         public ProductService(IProductRepository productRepository)
         {
             this.productRepository = productRepository;
         }
 
-        public Task<ProductGetDTO> GetProductAsync(Guid id)
+        public async Task<ProductGetDTO> GetProductAsync(Guid id)
         {
-            throw new NotImplementedException();
+            Product product = await productRepository.FindProductAsync(id);
+            if(product == null)
+            {
+                throw new ResourceNotFoundException();
+            }
+            return mapper.Map<ProductGetDTO>(product);
         }
 
-        public Task<IEnumerable<ProductGetListDTO>> GetProductsAsync(ProductPagingFilter pagingFilter)
+        public async Task<IEnumerable<ProductGetListDTO>> GetProductsAsync(ProductPagingFilter pagingFilter)
         {
-            throw new NotImplementedException();
+            IEnumerable<Product> products = await productRepository.FindProductsAsync(pagingFilter);
+            return mapper.Map<IEnumerable<ProductGetListDTO>>(products);
         }
 
-        public Task PostProductAsync(ProductPostDTO product)
+        public async Task PostProductAsync(ProductPostDTO product)
         {
-            throw new NotImplementedException();
+            Product productEntity = mapper.Map<Product>(product);
+            try
+            {
+                await productRepository.AddProductAsync(productEntity);
+            } catch(Exception ex)
+            {
+                throw new AddingResourceException(ex.Message);
+            }
         }
 
-        public Task PutProductAsync(ProductPutDTO product)
+        public async Task PutProductAsync(ProductPutDTO product)
         {
-            throw new NotImplementedException();
+            Product productEntity = mapper.Map<Product>(product);
+            try
+            {
+                await productRepository.UpdateProductAsync(productEntity);
+            } catch(Exception ex)
+            {
+                throw new UpdatingResourceException(ex.Message);
+            }
         }
 
-        public Task DeleteProductAsync(Guid id)
+        public async Task DeleteProductAsync(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await productRepository.RemoveProductAsync(id);
+            } catch (Exception ex)
+            {
+                throw new ResourceNotFoundException();
+            }
         }
     }
 }
