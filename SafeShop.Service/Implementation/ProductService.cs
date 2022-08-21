@@ -18,9 +18,10 @@ namespace SafeShop.Service.Implementation
         private readonly IProductRepository productRepository;
         private readonly IMapper mapper;
 
-        public ProductService(IProductRepository productRepository)
+        public ProductService(IProductRepository productRepository, IMapper mapper)
         {
             this.productRepository = productRepository;
+            this.mapper = mapper;
         }
 
         public async Task<ProductGetDTO> GetProductAsync(Guid id)
@@ -35,8 +36,18 @@ namespace SafeShop.Service.Implementation
 
         public async Task<IEnumerable<ProductGetListDTO>> GetProductsAsync(ProductPagingFilter pagingFilter)
         {
-            IEnumerable<Product> products = await productRepository.FindProductsAsync(pagingFilter);
-            return mapper.Map<IEnumerable<ProductGetListDTO>>(products);
+            try
+            {
+                IEnumerable<Product> products = await productRepository.FindProductsAsync(pagingFilter);
+                if (products.Count() == 0)
+                {
+                    return Enumerable.Empty<ProductGetListDTO>();
+                }
+                return mapper.Map<IEnumerable<ProductGetListDTO>>(products);
+            } catch(Exception ex)
+            {
+                throw new ResourceNotFoundException(ex.Message);
+            }
         }
 
         public async Task PostProductAsync(ProductPostDTO product)
@@ -51,12 +62,12 @@ namespace SafeShop.Service.Implementation
             }
         }
 
-        public async Task PutProductAsync(ProductPutDTO product)
+        public async Task PutProductAsync(ProductPutDTO product, Guid id)
         {
             Product productEntity = mapper.Map<Product>(product);
             try
             {
-                await productRepository.UpdateProductAsync(productEntity);
+                await productRepository.UpdateProductAsync(productEntity, id);
             } catch(Exception ex)
             {
                 throw new UpdatingResourceException(ex.Message);
@@ -70,7 +81,7 @@ namespace SafeShop.Service.Implementation
                 await productRepository.RemoveProductAsync(id);
             } catch (Exception ex)
             {
-                throw new ResourceNotFoundException();
+                throw new ResourceNotFoundException(ex.Message);
             }
         }
     }

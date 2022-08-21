@@ -28,7 +28,12 @@ namespace SafeShop.Repository.Implementation
 
         public async Task<IEnumerable<Product>> FindProductsAsync(ProductPagingFilter pagingFilter)
         {
-            int maxPage = (int)Math.Round((double)(context.Products.Count() / pagingFilter.PageSize), 0);
+            int productsCount = context.Products.Count();
+            if(productsCount == 0)
+            {
+                return Enumerable.Empty<Product>();
+            }
+            int maxPage = (int) Math.Ceiling((decimal)productsCount / (decimal)pagingFilter.PageSize);
             int page = pagingFilter.CurrentPage > maxPage ? maxPage : pagingFilter.CurrentPage;
             int size = pagingFilter.PageSize;
 
@@ -44,9 +49,9 @@ namespace SafeShop.Repository.Implementation
             await context.SaveChangesAsync();
         }
 
-        public async Task UpdateProductAsync(Product product)
+        public async Task UpdateProductAsync(Product product, Guid id)
         {
-            Guid id = product.ID;
+            product.ID = id;
             Product oldProduct = await context.Products.FindAsync(id);
             if(oldProduct == null)
             {
@@ -66,6 +71,7 @@ namespace SafeShop.Repository.Implementation
             if (product != null)
             {
                 context.Products.Remove(product);
+                await context.SaveChangesAsync();
             }
         }
     }

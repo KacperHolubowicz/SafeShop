@@ -8,7 +8,7 @@ namespace SafeShop.Repository.Infrastructure
         Task<Product> FindProductAsync(Guid id);
         Task<IEnumerable<Product>> FindProductsAsync(ProductPagingFilter pagingFilter);
         Task AddProductAsync(Product product);
-        Task UpdateProductAsync(Product product);
+        Task UpdateProductAsync(Product product, Guid id);
         Task RemoveProductAsync(Guid id);
     }
 }

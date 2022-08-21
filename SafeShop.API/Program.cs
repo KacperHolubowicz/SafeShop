@@ -15,7 +15,7 @@ namespace SafeShop.API
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
+            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             builder.Services.AddDbContext<SafeShopContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("default"));
@@ -25,7 +25,6 @@ namespace SafeShop.API
             builder.Services.AddTransient<ICartRepository, CartRepository>();
             builder.Services.AddTransient<ICartProductRepository, CartProductRepository>();
             builder.Services.AddTransient<IUserRepository, UserRepository>();
-            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();

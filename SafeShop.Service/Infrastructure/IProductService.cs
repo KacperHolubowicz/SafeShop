@@ -13,7 +13,7 @@ namespace SafeShop.Service.Infrastructure
         Task<ProductGetDTO> GetProductAsync(Guid id);
         Task<IEnumerable<ProductGetListDTO>> GetProductsAsync(ProductPagingFilter pagingFilter);
         Task PostProductAsync(ProductPostDTO product);
-        Task PutProductAsync(ProductPutDTO product);
+        Task PutProductAsync(ProductPutDTO product, Guid id);
         Task DeleteProductAsync(Guid id);
     }
 }
