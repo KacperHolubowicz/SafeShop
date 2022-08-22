@@ -26,16 +26,24 @@ namespace SafeShop.Repository.Implementation
 
         public async Task AddUserAsync(User user)
         {
+            if(context.Users.Any(u => u.Login == user.Login || u.Email == user.Email))
+            {
+                throw new Exception("There is already a user with given login or email");
+            }
             await context.Users.AddAsync(user);
             await context.SaveChangesAsync();
         }
 
-        public async Task UpdateUserAsync(User user)
+        public async Task UpdateUserAsync(User user, Guid id)
         {
+            user.ID = id;
             User oldUser = await context.Users.FindAsync(user.ID);
             if(oldUser == null)
             {
                 throw new NullReferenceException("No such resource to update");
+            } else if(context.Users.Any(u => u.Email == user.Email))
+            {
+                throw new Exception("There is already a user with given email");
             }
             oldUser.FirstName = user.FirstName ?? oldUser.FirstName;
             oldUser.LastName = user.LastName ?? oldUser.LastName;
@@ -50,7 +58,20 @@ namespace SafeShop.Repository.Implementation
             if(user != null)
             {
                 context.Users.Remove(user);
+                await context.SaveChangesAsync();
             }
+        }
+
+        public async Task<byte[]> GetSaltAsync(string login)
+        {
+            byte[] salt = await Task.FromResult(context.Users.FirstOrDefault(u => u.Login == login).Salt);
+            return salt;
+        }
+
+        public async Task<User> VerifyCredentialsAsync(string login, byte[] password)
+        {
+            User user = await Task.FromResult(context.Users.FirstOrDefault(u => u.Login == login && u.Password == password));
+            return user;
         }
     }
 }

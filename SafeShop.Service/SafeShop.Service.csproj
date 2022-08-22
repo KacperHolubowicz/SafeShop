@@ -14,11 +14,11 @@
   <ItemGroup>
     <Folder Include="DTO\Cart\" />
     <Folder Include="DTO\CartProduct\" />
-    <Folder Include="DTO\User\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="11.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="6.0.8" />
   </ItemGroup>
 
 </Project>

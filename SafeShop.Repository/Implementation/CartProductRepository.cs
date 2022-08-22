@@ -51,6 +51,7 @@ namespace SafeShop.Repository.Implementation
             if(cartProduct != null)
             {
                 context.Remove(cartProduct);
+                await context.SaveChangesAsync();
             }
         }
 

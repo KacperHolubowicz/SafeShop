@@ -11,7 +11,9 @@ namespace SafeShop.Repository.Infrastructure
     {
         Task<User> FindUserAsync(Guid id);
         Task AddUserAsync(User user);
-        Task UpdateUserAsync(User user);
+        Task UpdateUserAsync(User user, Guid id);
         Task DeleteUserAsync(Guid id);
+        Task<byte[]> GetSaltAsync(string login);
+        Task<User> VerifyCredentialsAsync(string login, byte[] password);
     }
 }
