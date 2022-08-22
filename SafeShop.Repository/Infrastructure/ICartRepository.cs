@@ -10,8 +10,8 @@ namespace SafeShop.Repository.Infrastructure
     public interface ICartRepository
     {
         Task<Cart> FindCartAsync(Guid id);
-        Task AddCartAsync(Cart cart);
-        Task UpdateCartAsync(Cart cart);
+        Task<Guid> AddCartAsync(Cart cart);
+        Task UpdateCartAsync(Cart cart, Guid id);
         Task DeleteCartAsync(Guid id);
     }
 }

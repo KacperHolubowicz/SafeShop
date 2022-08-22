@@ -13,8 +13,6 @@
 
   <ItemGroup>
     <Folder Include="DTO\Auth\" />
-    <Folder Include="DTO\Cart\" />
-    <Folder Include="DTO\CartProduct\" />
   </ItemGroup>
 
   <ItemGroup>

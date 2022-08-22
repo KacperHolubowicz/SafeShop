@@ -24,15 +24,16 @@ namespace SafeShop.Repository.Implementation
             return cart;
         }
 
-        public async Task AddCartAsync(Cart cart)
+        public async Task<Guid> AddCartAsync(Cart cart)
         {
             await context.Carts.AddAsync(cart);
             await context.SaveChangesAsync();
+            return cart.ID;
         }
 
-        public async Task UpdateCartAsync(Cart cart)
+        public async Task UpdateCartAsync(Cart cart, Guid id)
         {
-            Cart oldCart = await context.Carts.FindAsync(cart.ID);
+            Cart oldCart = await context.Carts.FindAsync(id);
             if(oldCart == null)
             {
                 throw new NullReferenceException("No such resource to update");

@@ -7,7 +7,7 @@
         public DateTime ModifiedAt { get; set; }
         public decimal Total { get; set; } = decimal.Zero;
         public IEnumerable<CartProduct> Products { get; set; }
-        public User User { get; set; }
-        public Guid UserID { get; set; }
+        public User? User { get; set; }
+        public Guid? UserID { get; set; }
     }
 }

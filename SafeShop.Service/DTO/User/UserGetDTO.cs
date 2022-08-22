@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SafeShop.Service.DTO.Cart;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,5 +13,6 @@ namespace SafeShop.Service.DTO.User
         public string Email { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public CartGetDTO Cart { get; set; }
     }
 }
