@@ -28,7 +28,7 @@ namespace SafeShop.Repository.Implementation
         {
             if(context.Users.Any(u => u.Login == user.Login || u.Email == user.Email))
             {
-                throw new Exception("There is already a user with given login or email");
+                throw new ArgumentException("There is already a user with given login or email");
             }
             await context.Users.AddAsync(user);
             await context.SaveChangesAsync();
@@ -43,7 +43,7 @@ namespace SafeShop.Repository.Implementation
                 throw new NullReferenceException("No such resource to update");
             } else if(context.Users.Any(u => u.Email == user.Email))
             {
-                throw new Exception("There is already a user with given email");
+                throw new ArgumentException("There is already a user with given email");
             }
             oldUser.FirstName = user.FirstName ?? oldUser.FirstName;
             oldUser.LastName = user.LastName ?? oldUser.LastName;

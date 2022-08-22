@@ -25,6 +25,8 @@ namespace SafeShop.API
             builder.Services.AddTransient<ICartRepository, CartRepository>();
             builder.Services.AddTransient<ICartProductRepository, CartProductRepository>();
             builder.Services.AddTransient<IUserRepository, UserRepository>();
+            builder.Services.AddTransient<IEncryptionService, EncryptionService>();
+            builder.Services.AddTransient<IUserService, UserService>();
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();

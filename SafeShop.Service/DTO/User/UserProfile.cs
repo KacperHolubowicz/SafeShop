@@ -14,7 +14,6 @@ namespace SafeShop.Service.DTO.User
         public UserProfile()
         {
             CreateMap<Core.Model.User, UserGetDTO>();
-            CreateMap<UserPostDTO, Core.Model.User>();
             CreateMap<UserPutDTO, Core.Model.User>();
         }
     }

@@ -8,8 +8,8 @@ namespace SafeShop.Service.DTO.User
 {
     public class UserPutDTO
     {
-        public string Email { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public string? Email { get; set; }
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
     }
 }

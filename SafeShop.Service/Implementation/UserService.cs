@@ -5,11 +5,6 @@ using SafeShop.Repository.Infrastructure;
 using SafeShop.Service.DTO.User;
 using SafeShop.Service.Exceptions;
 using SafeShop.Service.Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SafeShop.Service.Implementation
 {
@@ -18,18 +13,15 @@ namespace SafeShop.Service.Implementation
         private readonly IUserRepository userRepository;
         private readonly IEncryptionService encryptionService;
         private readonly IMapper mapper;
-        private readonly ILogger<UserService> logger;
 
-        public UserService(IUserRepository userRepository, IEncryptionService encryptionService,
-            IMapper mapper, ILogger<UserService> logger)
+        public UserService(IUserRepository userRepository, IEncryptionService encryptionService, IMapper mapper)
         {
             this.userRepository = userRepository;
             this.encryptionService = encryptionService;
             this.mapper = mapper;
-            this.logger = logger;
         }
 
-        public async Task<UserGetDTO> FindUserAsync(Guid id)
+        public async Task<UserGetDTO> GetUserAsync(Guid id)
         {
             User user = await userRepository.FindUserAsync(id);
             if(user == null)
@@ -39,30 +31,43 @@ namespace SafeShop.Service.Implementation
             return mapper.Map<UserGetDTO>(user);
         }
 
-        public async Task AddUserAsync(UserPostDTO user)
+        public async Task PostUserAsync(UserPostDTO user)
         {
-            User userEntity = mapper.Map<User>(user);
+            User userEntity = new User()
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                Login = user.Login
+            };
             Tuple<byte[], byte[]> passwordWithSalt = encryptionService.HashPasswordWithoutPreGeneratedSalt(user.Password);
             userEntity.Password = passwordWithSalt.Item1;
             userEntity.Salt = passwordWithSalt.Item2;
             try
             {
                 await userRepository.AddUserAsync(userEntity);
-            } catch(Exception ex)
+            } catch(ArgumentException ex)
             {
-                throw new AddingResourceException(ex.Message);
+                throw new DuplicatedValueException(ex.Message);
+            } catch(Exception ex2)
+            {
+                throw new AddingResourceException(ex2.Message);
             }
         }
 
-        public async Task UpdateUserAsync(UserPutDTO user, Guid id)
+        public async Task PutUserAsync(UserPutDTO user, Guid id)
         {
             User userEntity = mapper.Map<User>(user);
             try
             {
                 await userRepository.UpdateUserAsync(userEntity, id);
-            } catch(Exception ex)
+            } catch(ArgumentException ex)
             {
-                throw new UpdatingResourceException(ex.Message);
+                throw new DuplicatedValueException(ex.Message);
+            } 
+            catch(Exception ex2)
+            {
+                throw new UpdatingResourceException(ex2.Message);
             }
         }
 
