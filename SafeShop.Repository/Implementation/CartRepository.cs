@@ -1,4 +1,5 @@
-﻿using SafeShop.Core.Model;
+﻿using Microsoft.EntityFrameworkCore;
+using SafeShop.Core.Model;
 using SafeShop.Repository.DataAccess;
 using SafeShop.Repository.Infrastructure;
 using System;
@@ -20,7 +21,10 @@ namespace SafeShop.Repository.Implementation
 
         public async Task<Cart> FindCartAsync(Guid id)
         {
-            Cart cart = await context.Carts.FindAsync(id);
+            Cart cart = await context.Carts
+                .Include(c => c.Products)
+                .ThenInclude(cp => cp.Product)
+                .FirstAsync(c => c.ID == id);
             return cart;
         }
 
@@ -40,7 +44,6 @@ namespace SafeShop.Repository.Implementation
             }
             oldCart.Products = cart.Products;
             oldCart.ModifiedAt = DateTime.Now;
-            oldCart.Total = CalculateTotal(cart.Products);
             context.Carts.Update(oldCart);
             await context.SaveChangesAsync();
         }

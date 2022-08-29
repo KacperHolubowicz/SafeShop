@@ -5,6 +5,8 @@ using SafeShop.Service.Infrastructure;
 
 namespace SafeShop.API.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class CartController : ControllerBase
     {
         private readonly ICartService cartService;

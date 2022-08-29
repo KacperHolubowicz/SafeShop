@@ -12,7 +12,6 @@ namespace SafeShop.Service.DTO.CartProduct
         public CartProductProfile()
         {
             CreateMap<Core.Model.Product, CartProductGetDTO>();
-            CreateMap<CartProductPutDTO, Core.Model.Product>();
         }
     }
 }

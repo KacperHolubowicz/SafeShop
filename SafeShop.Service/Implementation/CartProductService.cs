@@ -28,12 +28,7 @@ namespace SafeShop.Service.Implementation
             this.productRepository = productRepository;
         }
 
-        public async Task<IEnumerable<CartProductGetDTO>> FindCartProductsAsync(Guid cartId)
-        {
-            return mapper.Map<IEnumerable<CartProductGetDTO>>(await cartProductRepository.FindCartProductsAsync(cartId));
-        }
-
-        public async Task<Guid> AddCartProductAsync(CartProductPostDTO cartProduct, Guid? userId)
+        public async Task<Guid> PostCartProductAsync(CartProductPostDTO cartProduct, Guid? userId)
         {
             try
             {
@@ -42,19 +37,17 @@ namespace SafeShop.Service.Implementation
                 {
                     AddedAt = DateTime.UtcNow,
                     Product = await productRepository.FindProductAsync(cartProduct.ProductID),
-                    Quantity = cartProduct.Quantity,
-                    Total = cartProduct.Total
+                    Quantity = cartProduct.Quantity
                 };
 
-                if(cartProduct.CartID == null)
+                if(cartProduct.CartID == null || cartProduct.CartID == Guid.Empty)
                 {
                     Cart newCart = new Cart()
                     {
                         CreatedAt = DateTime.UtcNow,
                         ModifiedAt = DateTime.UtcNow,
                         Products = new List<CartProduct>(),
-                        Total = cartProduct.Total,
-                        UserID = userId
+                        UserID = userId == Guid.Empty ? null : userId
                     };
                     product.Cart = newCart;
                     newCart.Products.Append(product);
@@ -64,8 +57,8 @@ namespace SafeShop.Service.Implementation
                 {
                     cartId = cartProduct.CartID.Value;
                     product.Cart = await cartRepository.FindCartAsync(cartId);
-                    await cartProductRepository.AddCartProductAsync(product);
                 }
+                await cartProductRepository.AddCartProductAsync(product);
                 return cartId;
             } catch(Exception ex)
             {
@@ -73,11 +66,11 @@ namespace SafeShop.Service.Implementation
             }
         }
 
-        public async Task UpdateCartProductAsync(CartProductPutDTO cartProduct, Guid id)
+        public async Task PutCartProductAsync(CartProductPutDTO cartProduct, Guid id)
         {
             try
             {
-                CartProduct cartProductEntity = mapper.Map<CartProduct>(cartProduct);
+                CartProduct cartProductEntity = new CartProduct() { Quantity = cartProduct.Quantity };
                 await cartProductRepository.UpdateCartProductAsync(cartProductEntity, id);
             }
             catch (NullReferenceException ex)

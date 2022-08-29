@@ -39,7 +39,6 @@ namespace SafeShop.Service.Implementation
             return new CartGetDTO()
             {
                 ID = cart.ID,
-                Total = cart.Total,
                 Products = cart.Products.Select(p => new CartProductGetDTO()
                 {
                     Total = p.Total,
@@ -84,8 +83,7 @@ namespace SafeShop.Service.Implementation
                     Cart = productCart,
                     AddedAt = DateTime.UtcNow,
                     Product = productRepository.FindProductAsync(p.ProductID).Result,
-                    Quantity = p.Quantity,
-                    Total = p.Total
+                    Quantity = p.Quantity
 
                 });
                 Cart cartEntity = new Cart()

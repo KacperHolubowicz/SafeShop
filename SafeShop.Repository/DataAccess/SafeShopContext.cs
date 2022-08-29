@@ -42,7 +42,6 @@ namespace SafeShop.Repository.DataAccess
                 c.HasOne(ca => ca.User)
                 .WithOne(u => u.Cart)
                 .HasForeignKey<Cart>(c => c.UserID);
-                c.Property(ca => ca.Total).HasColumnType("decimal(5, 2)");
             });
 
             modelBuilder.Entity<User>()

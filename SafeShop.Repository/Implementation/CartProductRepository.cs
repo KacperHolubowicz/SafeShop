@@ -19,14 +19,9 @@ namespace SafeShop.Repository.Implementation
             this.context = context;
         }
 
-        public async Task<IEnumerable<CartProduct>> FindCartProductsAsync(Guid cartId)
-        {
-            List<CartProduct> products = await context.CartProducts.Where(cp => cp.Cart.ID == cartId).ToListAsync();
-            return products;
-        }
-
         public async Task AddCartProductAsync(CartProduct cartProduct)
         {
+            cartProduct.Total = CalculateTotal(cartProduct, cartProduct.Product.Price);
             await context.CartProducts.AddAsync(cartProduct);
             await context.SaveChangesAsync();
 
@@ -34,24 +29,34 @@ namespace SafeShop.Repository.Implementation
 
         public async Task UpdateCartProductAsync(CartProduct cartProduct, Guid id)
         {
-            CartProduct oldProduct = await context.CartProducts.FindAsync(id);
+            CartProduct oldProduct = await context.CartProducts
+                .Include(cp => cp.Product)
+                .FirstAsync(cp => cp.ID == id);
             if(oldProduct == null)
             {
                 throw new NullReferenceException("No such resource to update");
             }
             oldProduct.Quantity = cartProduct.Quantity;
-            oldProduct.Total = CalculateTotal(cartProduct);
+            oldProduct.Total = CalculateTotal(cartProduct, oldProduct.Product.Price);
             context.Update(oldProduct);
             await context.SaveChangesAsync();
         }
 
         public async Task DeleteCartProductAsync(Guid id)
         {
-            var cartProduct = await context.CartProducts.FindAsync(id);
+            var cartProduct = await context.CartProducts
+                .Include(cp => cp.Cart)
+                .FirstAsync(cp => cp.ID == id);
             if(cartProduct != null)
             {
                 Cart cart = cartProduct.Cart;
-                int count = cart.Products.Count() - 1;
+                int count = context.CartProducts
+                    .Include(cp => cp.Cart)
+                    .ThenInclude(c => c.Products)
+                    .First(cp => cp.ID == id)
+                    .Cart
+                    .Products
+                    .Count() - 1;
                 context.Remove(cartProduct);
                 if(count == 0)
                 {
@@ -61,9 +66,9 @@ namespace SafeShop.Repository.Implementation
             }
         }
 
-        private decimal CalculateTotal(CartProduct product)
+        private decimal CalculateTotal(CartProduct product, decimal price)
         {
-            return product.Quantity * product.Product.Price;
+            return product.Quantity * price;
         }
     }
 }

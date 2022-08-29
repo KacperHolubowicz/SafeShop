@@ -10,7 +10,6 @@ namespace SafeShop.Service.DTO.Cart
     public class CartGetDTO
     {
         public Guid ID { get; set; }
-        public decimal Total { get; set; }
         public IEnumerable<CartProductGetDTO> Products { get; set; }
     }
 }

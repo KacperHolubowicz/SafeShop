@@ -9,9 +9,8 @@ namespace SafeShop.Service.Infrastructure
 {
     public interface ICartProductService
     {
-        Task<IEnumerable<CartProductGetDTO>> FindCartProductsAsync(Guid cartId);
-        Task<Guid> AddCartProductAsync(CartProductPostDTO cartProduct, Guid? userId);
-        Task UpdateCartProductAsync(CartProductPutDTO cartProduct, Guid id);
+        Task<Guid> PostCartProductAsync(CartProductPostDTO cartProduct, Guid? userId);
+        Task PutCartProductAsync(CartProductPutDTO cartProduct, Guid id);
         Task DeleteCartProductAsync(Guid id);
     }
 }
