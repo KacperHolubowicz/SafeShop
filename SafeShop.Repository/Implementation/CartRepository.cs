@@ -55,6 +55,14 @@ namespace SafeShop.Repository.Implementation
             }
         }
 
+        public async Task DeleteEmptyCartAsync(Guid productId)
+        {
+            CartProduct cartP = await context.CartProducts.FindAsync(productId);
+            Cart cart = cartP.Cart;
+            context.Carts.Remove(cart);
+            await context.SaveChangesAsync();
+        }
+
         private decimal CalculateTotal(IEnumerable<CartProduct> products)
         {
             return products.Sum(product => product.Total);

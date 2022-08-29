@@ -29,4 +29,8 @@
     <ProjectReference Include="..\SafeShop.Service\SafeShop.Service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Responses\" />
+  </ItemGroup>
+
 </Project>

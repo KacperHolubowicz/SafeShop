@@ -6,12 +6,8 @@ using System.Threading.Tasks;
 
 namespace SafeShop.Service.DTO.CartProduct
 {
-    public class CartProductPostDTO
+    public class CartProductPutDTO
     {
         public int Quantity { get; set; }
-        public DateTime AddedAt { get; set; }
-        public decimal Total { get; set; }
-        public Guid ProductID { get; set; }
-        public Guid? CartID { get; set; }
     }
 }

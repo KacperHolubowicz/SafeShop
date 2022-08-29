@@ -19,9 +19,9 @@ namespace SafeShop.Repository.Implementation
             this.context = context;
         }
 
-        public async Task<IEnumerable<CartProduct>> FindCartProductsAsync()
+        public async Task<IEnumerable<CartProduct>> FindCartProductsAsync(Guid cartId)
         {
-            List<CartProduct> products = await context.CartProducts.ToListAsync();
+            List<CartProduct> products = await context.CartProducts.Where(cp => cp.Cart.ID == cartId).ToListAsync();
             return products;
         }
 
@@ -32,9 +32,9 @@ namespace SafeShop.Repository.Implementation
 
         }
 
-        public async Task UpdateCartProductAsync(CartProduct cartProduct)
+        public async Task UpdateCartProductAsync(CartProduct cartProduct, Guid id)
         {
-            CartProduct oldProduct = await context.CartProducts.FindAsync(cartProduct.ID);
+            CartProduct oldProduct = await context.CartProducts.FindAsync(id);
             if(oldProduct == null)
             {
                 throw new NullReferenceException("No such resource to update");
@@ -50,7 +50,13 @@ namespace SafeShop.Repository.Implementation
             var cartProduct = await context.CartProducts.FindAsync(id);
             if(cartProduct != null)
             {
+                Cart cart = cartProduct.Cart;
+                int count = cart.Products.Count() - 1;
                 context.Remove(cartProduct);
+                if(count == 0)
+                {
+                    context.Remove(cart);
+                }
                 await context.SaveChangesAsync();
             }
         }
