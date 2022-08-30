@@ -24,14 +24,18 @@ namespace SafeShop.Service.Implementation
             this.mapper = mapper;
         }
 
-        public async Task<ProductGetDTO> GetProductAsync(Guid id)
+        public async Task<ProductGetDTO> GetProductAsync(Guid productId, Guid? cartId)
         {
-            Product product = await productRepository.FindProductAsync(id);
+            Product product = await productRepository.FindProductAsync(productId);
             if(product == null)
             {
                 throw new ResourceNotFoundException();
             }
-            return mapper.Map<ProductGetDTO>(product);
+            var prod = mapper.Map<ProductGetDTO>(product);
+            if (cartId.HasValue) {
+                prod.IsInCart = await productRepository.IsProductInCart(productId, cartId.Value);
+            }
+            return prod;
         }
 
         public async Task<PagingWrapper<IEnumerable<ProductGetListDTO>>> GetProductsAsync(ProductPagingFilter pagingFilter)

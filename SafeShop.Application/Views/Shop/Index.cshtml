@@ -4,9 +4,6 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.PaginatedProperty.First().ID)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.PaginatedProperty.First().Name)
             </th>
             <th>
@@ -22,9 +19,6 @@
 @foreach (var item in Model.PaginatedProperty) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.ID)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
@@ -34,7 +28,7 @@
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
             <td>
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Szczegóły", "Details", new { id = item.ID })
             </td>
         </tr>
 }
@@ -49,10 +43,10 @@
 <a asp-action="Index"
    asp-route-pageNumber="@(int.Parse(ViewData["PageNumber"].ToString()) - 1)"
    class="btn btn-default @prevDisabled">
-    Previous
+    Poprzednia strona
 </a>
 <a asp-action="Index"
    asp-route-pageNumber="@(int.Parse(ViewData["PageNumber"].ToString()) + 1)"
    class="btn btn-default @nextDisabled">
-    Next
+    Następna strona
 </a>

@@ -1,0 +1,47 @@
+﻿@using SafeShop.Application.Requests
+@model SafeShop.Application.ViewModels.ProductDetailsPageModel
+
+<div>
+    <h4>ProductDetailsPageModel</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Category)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Category)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+    </dl>
+</div>
+<div>
+    @{
+        var quantity = 1;
+    }
+    <input type="button" value="-" />
+    <input type="number" name="quantity" step="1" min="1" value="1" max="10" asp-for=@quantity/>
+    <input type="button" value="+" />
+    @Html.ActionLink("Dodaj do koszyka", "AddToCart", new AddProductToCartRequest() 
+    {
+        Quantity = @quantity,
+        ProductID = @Model.ID
+    } ) |
+    <a asp-action="Index">Do listy produktów</a>
+</div>

@@ -77,5 +77,14 @@ namespace SafeShop.Repository.Implementation
                 await context.SaveChangesAsync();
             }
         }
+
+        public async Task<bool> IsProductInCart(Guid productId, Guid cartId)
+        {
+            return await Task.FromResult(context.Carts
+                .Include(c => c.Products)
+                .ThenInclude(cp => cp.Product)
+                .First(c => c.ID == cartId)
+                .Products.Any(cp => cp.Product.ID == productId));
+        }
     }
 }

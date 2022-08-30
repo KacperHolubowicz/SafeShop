@@ -10,5 +10,6 @@ namespace SafeShop.Repository.Infrastructure
         Task AddProductAsync(Product product);
         Task UpdateProductAsync(Product product, Guid id);
         Task RemoveProductAsync(Guid id);
+        Task<bool> IsProductInCart(Guid productId, Guid cartId);
     }
 }

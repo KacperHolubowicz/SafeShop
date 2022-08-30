@@ -29,12 +29,12 @@ namespace SafeShop.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ProductGetDTO>> GetProductAsync([FromRoute] string id)
+        public async Task<ActionResult<ProductGetDTO>> GetProductAsync([FromQuery] Guid? cartId, [FromRoute] string id)
         {
             try
             {
                 Guid guid = Guid.Parse(id);
-                var product = await productService.GetProductAsync(guid);
+                var product = await productService.GetProductAsync(guid, cartId);
                 return Ok(product);
             } catch(ResourceNotFoundException ex)
             {
