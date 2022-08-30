@@ -26,21 +26,24 @@ namespace SafeShop.Repository.Implementation
             return product;
         }
 
-        public async Task<IEnumerable<Product>> FindProductsAsync(ProductPagingFilter pagingFilter)
+        public async Task<PagingWrapper<IEnumerable<Product>>> FindProductsAsync(ProductPagingFilter pagingFilter)
         {
             int productsCount = context.Products.Count();
             if(productsCount == 0)
             {
-                return Enumerable.Empty<Product>();
+                return new PagingWrapper<IEnumerable<Product>>(Enumerable.Empty<Product>(), false, false);
             }
             int maxPage = (int) Math.Ceiling((decimal)productsCount / (decimal)pagingFilter.PageSize);
             int page = pagingFilter.CurrentPage > maxPage ? maxPage : pagingFilter.CurrentPage;
             int size = pagingFilter.PageSize;
+            bool hasPrevious = page > 1;
+            bool hasNext = page < maxPage;
 
-            return await context.Products
+            var products = await context.Products
                 .Skip((page - 1) * size)
                 .Take(size)
                 .ToListAsync();
+            return new PagingWrapper<IEnumerable<Product>>(products, hasPrevious, hasNext);
         }
 
         public async Task AddProductAsync(Product product)

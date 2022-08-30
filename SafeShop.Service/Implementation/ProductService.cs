@@ -34,16 +34,19 @@ namespace SafeShop.Service.Implementation
             return mapper.Map<ProductGetDTO>(product);
         }
 
-        public async Task<IEnumerable<ProductGetListDTO>> GetProductsAsync(ProductPagingFilter pagingFilter)
+        public async Task<PagingWrapper<IEnumerable<ProductGetListDTO>>> GetProductsAsync(ProductPagingFilter pagingFilter)
         {
             try
             {
-                IEnumerable<Product> products = await productRepository.FindProductsAsync(pagingFilter);
+                PagingWrapper<IEnumerable<Product>> productWrapper = await productRepository.FindProductsAsync(pagingFilter);
+                var products = productWrapper.PaginatedProperty;
                 if (products.Count() == 0)
                 {
-                    return Enumerable.Empty<ProductGetListDTO>();
+                    return new PagingWrapper<IEnumerable<ProductGetListDTO>>(Enumerable.Empty<ProductGetListDTO>(), false, false);
                 }
-                return mapper.Map<IEnumerable<ProductGetListDTO>>(products);
+                var prods = mapper.Map<IEnumerable<ProductGetListDTO>>(products);
+                return new PagingWrapper<IEnumerable<ProductGetListDTO>>(prods, 
+                    productWrapper.HasPreviousPage, productWrapper.HasNextPage);
             } catch(Exception ex)
             {
                 throw new ResourceNotFoundException(ex.Message);

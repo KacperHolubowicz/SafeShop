@@ -11,7 +11,7 @@ namespace SafeShop.Service.Infrastructure
     public interface IProductService
     {
         Task<ProductGetDTO> GetProductAsync(Guid id);
-        Task<IEnumerable<ProductGetListDTO>> GetProductsAsync(ProductPagingFilter pagingFilter);
+        Task<PagingWrapper<IEnumerable<ProductGetListDTO>>> GetProductsAsync(ProductPagingFilter pagingFilter);
         Task PostProductAsync(ProductPostDTO product);
         Task PutProductAsync(ProductPutDTO product, Guid id);
         Task DeleteProductAsync(Guid id);

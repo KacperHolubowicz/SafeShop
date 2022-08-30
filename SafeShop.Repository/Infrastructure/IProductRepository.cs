@@ -6,7 +6,7 @@ namespace SafeShop.Repository.Infrastructure
     public interface IProductRepository
     {
         Task<Product> FindProductAsync(Guid id);
-        Task<IEnumerable<Product>> FindProductsAsync(ProductPagingFilter pagingFilter);
+        Task<PagingWrapper<IEnumerable<Product>>> FindProductsAsync(ProductPagingFilter pagingFilter);
         Task AddProductAsync(Product product);
         Task UpdateProductAsync(Product product, Guid id);
         Task RemoveProductAsync(Guid id);

@@ -21,7 +21,8 @@ namespace SafeShop.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductGetListDTO>>> GetProductsAsync([FromQuery] int page = 1, [FromQuery] int size = 5)
+        public async Task<ActionResult<PagingWrapper<IEnumerable<ProductGetListDTO>>>> GetProductsAsync
+            ([FromQuery] int page = 1, [FromQuery] int size = 5)
         {
             var products = await productService.GetProductsAsync(new ProductPagingFilter(page, size));
             return Ok(products);
