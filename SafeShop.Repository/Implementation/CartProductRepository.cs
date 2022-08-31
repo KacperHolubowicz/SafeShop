@@ -58,10 +58,6 @@ namespace SafeShop.Repository.Implementation
                     .Products
                     .Count() - 1;
                 context.Remove(cartProduct);
-                if(count == 0)
-                {
-                    context.Remove(cart);
-                }
                 await context.SaveChangesAsync();
             }
         }

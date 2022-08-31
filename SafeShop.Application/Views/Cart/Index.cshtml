@@ -1,0 +1,48 @@
+﻿@model SafeShop.Application.ViewModels.CartViewModel
+@{
+    decimal totalPrice = Model.Products.Sum(p => p.Total);
+}
+@if(count != 0){
+<h4>Twój koszyk</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Products.First().ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Products.First().Quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Products.First().Total)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Products) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Total)
+            </td>
+            <td>
+                @Html.ActionLink("Usuń produkt", "Delete", new { id = item.ID})
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<div class="ml-lg-2">
+    <p>Cena łączna zakupów: </p>
+    <p>@totalPrice</p>
+</div>
+}else {
+    <h3>Twój koszyk jest pusty.</h3>
+    <h3>Rozważ dodanie produktów do niego.</h3>
+}

@@ -24,7 +24,7 @@ namespace SafeShop.Repository.DataAccess
             modelBuilder.Entity<Product>(p =>
             {
                 p.HasKey(pr => pr.ID);
-                p.Property(pr => pr.Price).HasColumnType("decimal(5, 2)");
+                p.Property(pr => pr.Price).HasColumnType("decimal(8, 2)");
             });
 
             modelBuilder.Entity<CartProduct>(cp =>
@@ -33,7 +33,7 @@ namespace SafeShop.Repository.DataAccess
                 cp.HasOne(p => p.Product);
                 cp.HasOne(p => p.Cart)
                 .WithMany(c => c.Products);
-                cp.Property(p => p.Total).HasColumnType("decimal(5, 2)");
+                cp.Property(p => p.Total).HasColumnType("decimal(8, 2)");
             });
 
             modelBuilder.Entity<Cart>(c =>
@@ -54,14 +54,14 @@ namespace SafeShop.Repository.DataAccess
                 .WithOne(op => op.Order);
                 o.HasOne(or => or.User)
                 .WithMany(u => u.Orders);
-                o.Property(or => or.Total).HasColumnType("decimal(5, 2)");
+                o.Property(or => or.Total).HasColumnType("decimal(8, 2)");
             });
 
             modelBuilder.Entity<OrderProduct>(op =>
             {
                 op.HasKey(opr => opr.ID);
                 op.HasOne(o => o.Product);
-                op.Property(opr => opr.Total).HasColumnType("decimal(5, 2)");
+                op.Property(opr => opr.Total).HasColumnType("decimal(8, 2)");
             });
 
             base.OnModelCreating(modelBuilder);

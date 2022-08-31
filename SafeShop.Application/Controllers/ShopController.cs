@@ -28,16 +28,27 @@ namespace SafeShop.Application.Controllers
 
         public async Task<IActionResult> Details(Guid id)
         {
+            string endpoint = $"products/{id}";
+            if(Request.Cookies.ContainsKey("SID"))
+            {
+                endpoint += $"?cartId={Request.Cookies["SID"]}";
+            }
             var httpClient = factory.CreateClient("SafeShopClient");
-            var response = await httpClient.GetAsync($"products/{id}");
+            var response = await httpClient.GetAsync(endpoint);
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
             var product = JsonConvert.DeserializeObject<ProductDetailsPageModel>(content);
             return View(product);
         }
 
-        public async Task<IActionResult> AddToCart(AddProductToCartRequest request)
+        public async Task<IActionResult> AddToCart(int quantity, string productId)
         {
+            AddProductToCartRequest request = new AddProductToCartRequest()
+            {
+                ProductID = Guid.Parse(productId),
+                Quantity = quantity
+            };
+
             if (Request.Cookies.ContainsKey("SID"))
             {
                 request.CartID = Guid.Parse(HttpContext.Request.Cookies["SID"].ToString());

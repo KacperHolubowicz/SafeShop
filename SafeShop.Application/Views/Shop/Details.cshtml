@@ -2,7 +2,7 @@
 @model SafeShop.Application.ViewModels.ProductDetailsPageModel
 
 <div>
-    <h4>ProductDetailsPageModel</h4>
+    <h4>Szczegóły produktu</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -31,17 +31,23 @@
         </dd>
     </dl>
 </div>
+
 <div>
-    @{
-        var quantity = 1;
-    }
-    <input type="button" value="-" />
-    <input type="number" name="quantity" step="1" min="1" value="1" max="10" asp-for=@quantity/>
-    <input type="button" value="+" />
-    @Html.ActionLink("Dodaj do koszyka", "AddToCart", new AddProductToCartRequest() 
+    @if(!Model.IsInCart)
     {
-        Quantity = @quantity,
-        ProductID = @Model.ID
-    } ) |
+        <form asp-controller="Shop" asp-action="AddToCart" method="post">
+            <div>
+            <label>Wybierz ilość produktu</label>
+            <input type="number" name="quantity" step="1" min="1" max="10"/>
+        </div>
+        <input type="hidden" name="productId" value=@Model.ID />
+        <div>
+            <input type="submit" value="Dodaj do koszyka"/>
+        </div>
+    </form>
+    }else 
+    {
+        <p>Ten produkt już jest w twoim koszyku</p>
+    }
     <a asp-action="Index">Do listy produktów</a>
 </div>
