@@ -1,6 +1,7 @@
 ﻿@model SafeShop.Application.ViewModels.CartViewModel
 @{
     decimal totalPrice = Model.Products.Sum(p => p.Total);
+    int count = Model.Products.Count();
 }
 @if(count != 0){
 <h4>Twój koszyk</h4>
@@ -26,7 +27,21 @@
                 @Html.DisplayFor(modelItem => item.ProductName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Quantity)
+                <form method="post" asp-controller="Cart" asp-action="EditQuantity">
+                    <input type="hidden" name="productId" value=@item.ID>
+                    <select onchange="this.form.submit()" name="quantity">
+                        @for(int i = 1; i <= 10; i++)
+                        {
+                            if (i == item.Quantity)
+                            {
+                                <option selected value=@i>@i</option>
+                            } else
+                            {
+                                <option value=@i>@i</option>
+                            }
+                        }
+                        </select>
+                </form>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Total)

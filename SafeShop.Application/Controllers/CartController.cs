@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using SafeShop.Application.Requests;
 using SafeShop.Application.ViewModels;
 
 namespace SafeShop.Application.Controllers
@@ -32,6 +33,17 @@ namespace SafeShop.Application.Controllers
         {
             var httpClient = factory.CreateClient("SafeShopClient");
             var response = await httpClient.DeleteAsync($"cartproducts/{id}");
+            response.EnsureSuccessStatusCode();
+            return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> EditQuantity(string quantity, Guid productId)
+        {
+            var httpClient = factory.CreateClient("SafeShopClient");
+            ChangeProductQuantityRequest request = new ChangeProductQuantityRequest() { Quantity = int.Parse(quantity) };
+            string jsonBody = JsonConvert.SerializeObject(request);
+            StringContent body = new StringContent(jsonBody, encoding: System.Text.Encoding.UTF8, "application/json");
+            var response = await httpClient.PutAsync($"cartproducts/{productId}", body);
             response.EnsureSuccessStatusCode();
             return RedirectToAction("Index");
         }
