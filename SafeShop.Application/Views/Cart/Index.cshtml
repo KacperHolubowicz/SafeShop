@@ -57,6 +57,9 @@
     <p>Cena łączna zakupów: </p>
     <p>@totalPrice</p>
 </div>
+<div>
+    @Html.ActionLink("Zamów", "Order", new { id = Model.ID })
+</div>
 }else {
     <h3>Twój koszyk jest pusty.</h3>
     <h3>Rozważ dodanie produktów do niego.</h3>

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SafeShop.Application.Requests;
+using SafeShop.Application.Responses;
 using SafeShop.Application.ViewModels;
 
 namespace SafeShop.Application.Controllers
@@ -46,6 +47,30 @@ namespace SafeShop.Application.Controllers
             var response = await httpClient.PutAsync($"cartproducts/{productId}", body);
             response.EnsureSuccessStatusCode();
             return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> Order(Guid id)
+        {
+            var httpClient = factory.CreateClient("SafeShopClient");
+            var cartResponse = await httpClient.GetAsync($"cart/{id}");
+            cartResponse.EnsureSuccessStatusCode();
+            var cartContent = await cartResponse.Content.ReadAsStringAsync();
+            var cart = JsonConvert.DeserializeObject<CartViewModel>(cartContent);
+            PaymentRequest paymentRequest = new PaymentRequest()
+            {
+                Items = cart.Products.Select(p => new PaymentItemRequest
+                {
+                    Name = p.ProductName,
+                    Price = p.Total / p.Quantity,
+                    Quantity = p.Quantity
+                })
+            };
+            string jsonBody = JsonConvert.SerializeObject(paymentRequest);
+            StringContent body = new StringContent(jsonBody, encoding: System.Text.Encoding.UTF8, "application/json");
+            var response = await httpClient.PostAsync("payment", body);
+            response.EnsureSuccessStatusCode();
+            string url = JsonConvert.DeserializeObject<PaymentUrl>(await response.Content.ReadAsStringAsync()).Url;
+            return Redirect(url);
         }
     }
 }
