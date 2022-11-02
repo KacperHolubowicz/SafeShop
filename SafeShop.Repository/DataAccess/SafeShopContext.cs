@@ -16,6 +16,8 @@ namespace SafeShop.Repository.DataAccess
         public DbSet<User> Users { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderProduct> OrderProducts { get; set; }
+        public DbSet<BillingDetails> BillingDetails { get; set; }
+        public DbSet<ShippingDetails> ShippingDetails { get; set; }
 
         public SafeShopContext(DbContextOptions<SafeShopContext> options) : base(options) { }
 
@@ -55,6 +57,9 @@ namespace SafeShop.Repository.DataAccess
                 o.HasOne(or => or.User)
                 .WithMany(u => u.Orders);
                 o.Property(or => or.Total).HasColumnType("decimal(8, 2)");
+                o.HasOne(or => or.Details)
+                .WithOne(od => od.Order)
+                .HasForeignKey<OrderDetails>(od => od.OrderID);
             });
 
             modelBuilder.Entity<OrderProduct>(op =>
@@ -63,6 +68,28 @@ namespace SafeShop.Repository.DataAccess
                 op.HasOne(o => o.Product);
                 op.Property(opr => opr.Total).HasColumnType("decimal(8, 2)");
             });
+
+            modelBuilder.Entity<OrderDetails>(od =>
+            {
+                od.HasKey(od => od.ID);
+                od.HasOne(od => od.Shipping)
+                .WithOne(s => s.Order)
+                .HasForeignKey<ShippingDetails>(s => s.OrderID);
+                od.HasOne(od => od.Billing)
+                .WithOne(b => b.Order)
+                .HasForeignKey<BillingDetails>(b => b.OrderID);
+            });
+
+            modelBuilder.Entity<BillingDetails>(b =>
+            {
+                b.HasKey(b => b.ID);
+            });
+
+            modelBuilder.Entity<ShippingDetails>(s =>
+            {
+                s.HasKey(s => s.ID);
+            });
+
 
             base.OnModelCreating(modelBuilder);
         }
