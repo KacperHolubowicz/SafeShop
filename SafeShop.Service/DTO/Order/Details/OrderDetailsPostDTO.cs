@@ -8,7 +8,6 @@ namespace SafeShop.Service.DTO.Order.Details
 {
     public class OrderDetailsPostDTO
     {
-        public string Status { get; set; }
         public ShippingDetailsPostDTO Shipping { get; set; }
         public BillingDetailsPostDTO Billing { get; set; }
     }

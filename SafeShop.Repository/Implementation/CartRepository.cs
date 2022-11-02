@@ -22,6 +22,7 @@ namespace SafeShop.Repository.Implementation
         public async Task<Cart> FindCartAsync(Guid id)
         {
             Cart cart = await context.Carts
+                .Include(c => c.User)
                 .Include(c => c.Products)
                 .ThenInclude(cp => cp.Product)
                 .FirstAsync(c => c.ID == id);

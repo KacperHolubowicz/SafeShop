@@ -46,15 +46,15 @@ namespace SafeShop.Service.Implementation
             }
         }
 
-        public async Task<IEnumerable<OrderListDTO>> FindOrdersAsync(Guid userId)
+        public async Task<IEnumerable<OrderListDTO>> GetOrdersAsync(Guid userId)
         {
             var order = await orderRepository.FindOrdersAsync(userId);
             return mapper.Map<IEnumerable<OrderListDTO>>(order);
         }
 
-        public async Task<OrderGetDTO> FindOrderAsync(Guid orderId)
+        public async Task<OrderGetDTO> GetOrderAsync(Guid orderId, Guid userId)
         {
-            var order = await orderRepository.FindOrderAsync(orderId);
+            var order = await orderRepository.FindOrderAsync(orderId, userId);
             if(order == null)
             {
                 throw new ResourceNotFoundException();

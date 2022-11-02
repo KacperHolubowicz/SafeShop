@@ -22,6 +22,7 @@ namespace SafeShop.Repository.Implementation
         public async Task AddOrderAsync(Order order)
         {
             order.CreatedAt = DateTime.UtcNow;
+            order.Details.Status = "Pending";
             await context.Orders.AddAsync(order);
             await context.SaveChangesAsync();
         }
@@ -36,9 +37,10 @@ namespace SafeShop.Repository.Implementation
             return orders;
         }
 
-        public async Task<Order> FindOrderAsync(Guid orderId)
+        public async Task<Order> FindOrderAsync(Guid orderId, Guid userId)
         {
             Order order = await context.Orders
+                .Include(o => o.User)
                 .Include(o => o.Products)
                 .ThenInclude(p => p.Product)
                 .Include(o => o.Details)
@@ -46,6 +48,10 @@ namespace SafeShop.Repository.Implementation
                 .Include(o => o.Details)
                 .ThenInclude(d => d.Billing)
                 .FirstAsync(o => o.ID == orderId);
+            if(order.User.ID != userId)
+            {
+                return null;
+            }
             return order;
         }
     }
