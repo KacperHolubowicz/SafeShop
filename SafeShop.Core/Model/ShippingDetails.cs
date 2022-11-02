@@ -11,8 +11,6 @@ namespace SafeShop.Core.Model
         public string LastName { get; set; }
         public string Town { get; set; }
         public string Street { get; set; }
-        [StringLength(maximumLength: 6, MinimumLength = 6)]
-        [RegularExpression(@"\d{2}-\d{3}$")]
         public string ZipCode { get; set; }
     }
 }

@@ -17,15 +17,13 @@ namespace SafeShop.Service.Implementation
     {
         private readonly ICartRepository cartRepository;
         private readonly IUserRepository userRepository;
-        private readonly ICartProductRepository cartProductRepository;
         private readonly IProductRepository productRepository;
 
         public CartService(ICartRepository cartRepository, IUserRepository userRepository,
-            ICartProductRepository cartProductRepository, IProductRepository productRepository)
+            IProductRepository productRepository)
         {
             this.cartRepository = cartRepository;
             this.userRepository = userRepository;
-            this.cartProductRepository = cartProductRepository;
             this.productRepository = productRepository;
         }
 
