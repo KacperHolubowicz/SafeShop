@@ -19,9 +19,9 @@ namespace SafeShop.Application.Controllers
         {
             var httpClient = factory.CreateClient("SafeShopClient");
             CartViewModel cart = new CartViewModel() { Products = Enumerable.Empty<CartProductViewModel>() };
-            if(Request.Cookies.ContainsKey("SID"))
+            string cartId = GetCartId();
+            if (cartId != string.Empty)
             {
-                string cartId = Request.Cookies["SID"].ToString();
                 var response = await httpClient.GetAsync($"cart/{cartId}");
                 response.EnsureSuccessStatusCode();
                 var content = await response.Content.ReadAsStringAsync();
@@ -49,28 +49,20 @@ namespace SafeShop.Application.Controllers
             return RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> Order(Guid id)
+        public IActionResult Order()
         {
-            var httpClient = factory.CreateClient("SafeShopClient");
-            var cartResponse = await httpClient.GetAsync($"cart/{id}");
-            cartResponse.EnsureSuccessStatusCode();
-            var cartContent = await cartResponse.Content.ReadAsStringAsync();
-            var cart = JsonConvert.DeserializeObject<CartViewModel>(cartContent);
-            PaymentRequest paymentRequest = new PaymentRequest()
+            return RedirectToAction("Index", "Order");
+        }
+
+        private string GetCartId()
+        {
+            if(Request.Cookies.ContainsKey("SID"))
             {
-                Items = cart.Products.Select(p => new PaymentItemRequest
-                {
-                    Name = p.ProductName,
-                    Price = p.Total / p.Quantity,
-                    Quantity = p.Quantity
-                })
-            };
-            string jsonBody = JsonConvert.SerializeObject(paymentRequest);
-            StringContent body = new StringContent(jsonBody, encoding: System.Text.Encoding.UTF8, "application/json");
-            var response = await httpClient.PostAsync("payment", body);
-            response.EnsureSuccessStatusCode();
-            string url = JsonConvert.DeserializeObject<PaymentUrl>(await response.Content.ReadAsStringAsync()).Url;
-            return Redirect(url);
+                return Request.Cookies["SID"];
+            } else
+            {
+                return string.Empty;
+            }
         }
     }
 }
