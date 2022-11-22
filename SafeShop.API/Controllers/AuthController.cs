@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SafeShop.Service.DTO.Auth;
 using SafeShop.Service.DTO.User;
 using SafeShop.Service.Infrastructure;
 
 namespace SafeShop.API.Controllers
 {
+    [AllowAnonymous]
     [Route("api/[controller]")]
     [ApiController]
     //TODO add JWT service
@@ -12,11 +15,13 @@ namespace SafeShop.API.Controllers
     {
         private readonly IUserService userService;
         private readonly ILogger<AuthController> logger;
+        private readonly ILoginService loginService;
 
-        public AuthController(IUserService userService, ILogger<AuthController> logger)
+        public AuthController(IUserService userService, ILogger<AuthController> logger, ILoginService loginService)
         {
             this.userService = userService;
             this.logger = logger;
+            this.loginService = loginService;
         }
 
         [HttpPost("register")]
@@ -34,6 +39,25 @@ namespace SafeShop.API.Controllers
                 logger.LogError(ex.StackTrace);
                 logger.LogError(ex.Message);
                 return BadRequest("An error has occured while registering your account");
+            }
+        }
+
+        [HttpPost("login")]
+        public async Task<ActionResult<string>> LoginAsync([FromBody] LoginCredentials credentials)
+        {
+            try
+            {
+                var user = await loginService.LoginAsync(credentials);
+                string token = loginService.GenerateJWT(user);
+                return Ok(token);
+            } catch(InvalidCredentialsException ex)
+            {
+                return BadRequest(ex.Message);
+            } catch (Exception ex2)
+            {
+                logger.LogError(ex2.StackTrace);
+                logger.LogError(ex2.Message);
+                return BadRequest("An error has occured while signing in");
             }
         }
     }

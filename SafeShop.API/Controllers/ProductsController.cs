@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SafeShop.Repository.Filters;
 using SafeShop.Service.DTO.Product;
@@ -20,6 +22,7 @@ namespace SafeShop.API.Controllers
             this.logger = logger;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<PagingWrapper<IEnumerable<ProductGetListDTO>>>> GetProductsAsync
             ([FromQuery] int page = 1, [FromQuery] int size = 5)
@@ -28,6 +31,7 @@ namespace SafeShop.API.Controllers
             return Ok(products);
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductGetDTO>> GetProductAsync([FromQuery] Guid? cartId, [FromRoute] string id)
         {
@@ -50,6 +54,7 @@ namespace SafeShop.API.Controllers
             }
         }
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPost]
         public async Task<ActionResult> PostProductAsync([FromBody] ProductPostDTO product)
         {
@@ -66,6 +71,7 @@ namespace SafeShop.API.Controllers
             }
         }
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPut("{id}")]
         public async Task<ActionResult> PutProductAsync([FromBody] ProductPutDTO product, [FromRoute] string id)
         {
@@ -91,6 +97,7 @@ namespace SafeShop.API.Controllers
             }
         }
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteProductAsync([FromRoute] string id)
         {
