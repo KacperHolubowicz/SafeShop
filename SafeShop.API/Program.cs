@@ -1,5 +1,6 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using SafeShop.Repository.DataAccess;
@@ -11,6 +12,7 @@ using SafeShop.Service.Implementation;
 using SafeShop.Service.Infrastructure;
 using Stripe;
 using System.Configuration;
+using System.Security.Claims;
 using System.Text;
 
 namespace SafeShop.API
@@ -22,12 +24,14 @@ namespace SafeShop.API
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddHttpContextAccessor();
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             builder.Services.AddDbContext<SafeShopContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("default"));
             });
             var configuration = builder.Configuration;
+
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters
@@ -41,6 +45,30 @@ namespace SafeShop.API
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes
                         (configuration["Jwt:Key"]))
                 };
+            });
+
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy("ResourceClaim", policy =>
+                {
+                    policy.RequireAssertion(context =>
+                    {
+                        object resourceIdObject = new HttpContextAccessor().HttpContext.Request.RouteValues["id"];
+                        Claim claimIdClaim = context.User.Claims.FirstOrDefault(c => c.Type == "ID");
+                        if(resourceIdObject == null || claimIdClaim == null)
+                        {
+                            return false;
+                        }
+
+                        string resourceId = resourceIdObject.ToString();
+                        string claimId = claimIdClaim.Value;
+                        if(resourceId == claimId)
+                        {
+                            return true;
+                        }
+                        return false;
+                    });
+                });
             });
 
             JwtConfiguration conf = new JwtConfiguration(configuration["Jwt:Issuer"],

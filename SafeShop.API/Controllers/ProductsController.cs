@@ -40,13 +40,16 @@ namespace SafeShop.API.Controllers
                 Guid guid = Guid.Parse(id);
                 var product = await productService.GetProductAsync(guid, cartId);
                 return Ok(product);
-            } catch(ResourceNotFoundException ex)
+            } 
+            catch(ResourceNotFoundException ex)
             {
                 return NotFound(ex.Message);
-            } catch(FormatException)
+            } 
+            catch(FormatException)
             {
                 return BadRequest("Invalid format of an id");
-            } catch(Exception ex3)
+            } 
+            catch(Exception ex3)
             {
                 logger.LogError(ex3.Message);
                 logger.LogError(ex3.StackTrace);
@@ -79,7 +82,7 @@ namespace SafeShop.API.Controllers
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         [HttpPut("{id}")]
-        public async Task<ActionResult> PutProductAsync([FromBody] ProductPutDTO product, [FromRoute] string id, [FromForm] IFormFile imageFile)
+        public async Task<ActionResult> PutProductAsync([FromForm] ProductPutDTO product, [FromRoute] string id, [FromForm] IFormFile imageFile)
         {
             try
             {

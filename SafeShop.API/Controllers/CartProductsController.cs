@@ -11,7 +11,6 @@ namespace SafeShop.API.Controllers
     [ApiController]
     public class CartProductsController : ControllerBase
     {
-        //TODO add getting user id from cookie (perhaps decode JWT)
         private readonly ICartProductService cartProductService;
         private readonly ILogger<CartProductsController> logger;
 
@@ -22,11 +21,12 @@ namespace SafeShop.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<AddProductToCartResponse>> PostCartProductAsync([FromBody] CartProductPostDTO product)
+        public async Task<ActionResult<AddProductToCartResponse>> PostCartProductAsync([FromBody] CartProductPostDTO product,
+            [FromQuery] string id)
         {
             try
             {
-                Guid userId = Guid.Empty;
+                Guid userId = string.IsNullOrEmpty(id) ? Guid.Empty : Guid.Parse(id);
                 Guid cartId = await cartProductService.PostCartProductAsync(product, userId);
                 var response = new AddProductToCartResponse()
                 {
@@ -39,6 +39,10 @@ namespace SafeShop.API.Controllers
                 logger.LogError(ex.Message);
                 logger.LogError(ex.StackTrace);
                 return BadRequest("Error with adding a product. Seek logs for more information.");
+            }
+            catch (FormatException)
+            {
+                return BadRequest("Invalid format of an id");
             }
         }
 
