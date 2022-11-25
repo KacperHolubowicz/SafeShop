@@ -17,11 +17,13 @@ namespace SafeShop.Service.Implementation
     {
         private readonly IProductRepository productRepository;
         private readonly IMapper mapper;
+        private readonly IResizerService resizer;
 
-        public ProductService(IProductRepository productRepository, IMapper mapper)
+        public ProductService(IProductRepository productRepository, IMapper mapper, IResizerService resizer)
         {
             this.productRepository = productRepository;
             this.mapper = mapper;
+            this.resizer = resizer;
         }
 
         public async Task<ProductGetDTO> GetProductAsync(Guid productId, Guid? cartId)
@@ -62,6 +64,7 @@ namespace SafeShop.Service.Implementation
             Product productEntity = mapper.Map<Product>(product);
             try
             {
+                productEntity.Image = resizer.ResizeImage(productEntity.Image);
                 await productRepository.AddProductAsync(productEntity);
             } catch(Exception ex)
             {
@@ -74,6 +77,7 @@ namespace SafeShop.Service.Implementation
             Product productEntity = mapper.Map<Product>(product);
             try
             {
+                productEntity.Image = resizer.ResizeImage(productEntity.Image);
                 await productRepository.UpdateProductAsync(productEntity, id);
             } catch(Exception ex)
             {

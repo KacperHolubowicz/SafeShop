@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SafeShop.Service.Infrastructure
+namespace SafeShop.Repository.Encryption
 {
     public interface IEncryptionService
     {

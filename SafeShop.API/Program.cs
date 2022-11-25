@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using SafeShop.Repository.DataAccess;
+using SafeShop.Repository.Encryption;
 using SafeShop.Repository.Implementation;
 using SafeShop.Repository.Infrastructure;
 using SafeShop.Service.DTO.Auth;
@@ -50,6 +51,7 @@ namespace SafeShop.API
             builder.Services.AddTransient<ICartProductRepository, CartProductRepository>();
             builder.Services.AddTransient<IUserRepository, UserRepository>();
             builder.Services.AddTransient<IOrderRepository, OrderRepository>();
+            builder.Services.AddTransient<IResizerService, ResizerService>();
             builder.Services.AddTransient<IProductService, Service.Implementation.ProductService>();
             builder.Services.AddTransient<IEncryptionService, EncryptionService>();
             builder.Services.AddTransient<IUserService, UserService>();
@@ -70,8 +72,6 @@ namespace SafeShop.API
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
-            app.UseSession();
 
             app.Use(async (context, next) =>
             {

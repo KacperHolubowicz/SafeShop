@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
 using SafeShop.Core.Model;
+using SafeShop.Repository.Encryption;
 using SafeShop.Repository.Infrastructure;
 using SafeShop.Service.DTO.User;
 using SafeShop.Service.Exceptions;
@@ -38,7 +39,8 @@ namespace SafeShop.Service.Implementation
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email,
-                Login = user.Login
+                Login = user.Login,
+                Role = "User"
             };
             Tuple<byte[], byte[]> passwordWithSalt = encryptionService.HashPasswordWithoutPreGeneratedSalt(user.Password);
             userEntity.Password = passwordWithSalt.Item1;

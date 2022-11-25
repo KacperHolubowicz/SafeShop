@@ -64,6 +64,7 @@ namespace SafeShop.Repository.Implementation
             oldProduct.Description = product.Description ?? oldProduct.Description;
             oldProduct.Category = product.Category ?? oldProduct.Category;
             oldProduct.Price = product.Price == decimal.Zero ? oldProduct.Price : product.Price;
+            oldProduct.Image = product.Image ?? oldProduct.Image;
             context.Products.Update(oldProduct);
             await context.SaveChangesAsync();
         }

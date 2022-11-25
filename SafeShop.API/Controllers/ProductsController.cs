@@ -54,12 +54,18 @@ namespace SafeShop.API.Controllers
             }
         }
 
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         [HttpPost]
-        public async Task<ActionResult> PostProductAsync([FromBody] ProductPostDTO product)
+        public async Task<ActionResult> PostProductAsync([FromForm] ProductPostDTO product, [FromForm] IFormFile imageFile)
         {
+            if(imageFile.Length == 0)
+            {
+                return BadRequest("You need to add a valid file with any content");
+            }
             try
             {
+                product.Image = await FileToByteArray(imageFile);
                 await productService.PostProductAsync(product);
                 return NoContent();
             }
@@ -71,12 +77,13 @@ namespace SafeShop.API.Controllers
             }
         }
 
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         [HttpPut("{id}")]
-        public async Task<ActionResult> PutProductAsync([FromBody] ProductPutDTO product, [FromRoute] string id)
+        public async Task<ActionResult> PutProductAsync([FromBody] ProductPutDTO product, [FromRoute] string id, [FromForm] IFormFile imageFile)
         {
             try
             {
+                product.Image = await FileToByteArray(imageFile);
                 Guid guid = Guid.Parse(id);
                 await productService.PutProductAsync(product, guid);
                 return NoContent();
@@ -97,7 +104,7 @@ namespace SafeShop.API.Controllers
             }
         }
 
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteProductAsync([FromRoute] string id)
         {
@@ -118,7 +125,12 @@ namespace SafeShop.API.Controllers
                 return BadRequest("Invalid request. Seek logs for more information.");
             }
         }
-
-
+        
+        private async Task<byte[]> FileToByteArray(IFormFile file)
+        {
+            await using var memoryStream = new MemoryStream();
+            await file.CopyToAsync(memoryStream);
+            return memoryStream.ToArray();
+        }
     }
 }

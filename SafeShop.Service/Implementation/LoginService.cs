@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.IdentityModel.Tokens;
 using SafeShop.Core.Model;
+using SafeShop.Repository.Encryption;
 using SafeShop.Repository.Infrastructure;
 using SafeShop.Service.DTO.Auth;
 using SafeShop.Service.DTO.User;
@@ -53,7 +54,8 @@ namespace SafeShop.Service.Implementation
             {
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.Surname, user.LastName),
-                new Claim("ID", user.ID.ToString())
+                new Claim("ID", user.ID.ToString()),
+                new Claim(ClaimTypes.Role, user.Role)
             };
 
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.Key));

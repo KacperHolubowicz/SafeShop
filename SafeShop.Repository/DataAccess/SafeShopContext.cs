@@ -5,11 +5,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SafeShop.Core.Model;
+using Microsoft.Extensions.Configuration;
+using SafeShop.Repository.Encryption;
 
 namespace SafeShop.Repository.DataAccess
 {
     public class SafeShopContext : DbContext
     {
+        private readonly IConfiguration conf;
+        private readonly IEncryptionService encryptionService;
+
         public DbSet<Product> Products { get; set; }
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CartProduct> CartProducts { get; set; }
@@ -19,7 +24,12 @@ namespace SafeShop.Repository.DataAccess
         public DbSet<BillingDetails> BillingDetails { get; set; }
         public DbSet<ShippingDetails> ShippingDetails { get; set; }
 
-        public SafeShopContext(DbContextOptions<SafeShopContext> options) : base(options) { }
+        public SafeShopContext(DbContextOptions<SafeShopContext> options, IConfiguration conf,
+            IEncryptionService encryptionService) : base(options)
+        {
+            this.conf = conf;
+            this.encryptionService = encryptionService;
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -90,6 +100,18 @@ namespace SafeShop.Repository.DataAccess
                 s.HasKey(s => s.ID);
             });
 
+            Tuple<byte[], byte[]> passWithSalt = encryptionService.HashPasswordWithoutPreGeneratedSalt(conf["Admin:Password"]);
+            modelBuilder.Entity<User>().HasData(new User()
+            {
+                ID = Guid.NewGuid(),
+                FirstName = "Safe",
+                LastName = "Shop",
+                Role = "Admin",
+                Email = conf["Admin:Email"],
+                Login = conf["Admin:Login"],
+                Password = passWithSalt.Item1,
+                Salt = passWithSalt.Item2
+            });
 
             base.OnModelCreating(modelBuilder);
         }

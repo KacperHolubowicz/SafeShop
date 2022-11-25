@@ -14,5 +14,6 @@ namespace SafeShop.Service.DTO.User
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public CartGetDTO Cart { get; set; }
+        public string Role { get; set; }
     }
 }

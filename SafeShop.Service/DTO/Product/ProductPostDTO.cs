@@ -12,5 +12,6 @@ namespace SafeShop.Service.DTO.Product
         public string Description { get; set; }
         public string Category { get; set; }
         public decimal Price { get; set; }
+        public byte[]? Image { get; set; }
     }
 }
