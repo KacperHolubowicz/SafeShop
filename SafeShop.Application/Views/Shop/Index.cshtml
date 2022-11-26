@@ -4,6 +4,9 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.PaginatedProperty.First().Image)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.PaginatedProperty.First().Name)
             </th>
             <th>
@@ -18,6 +21,9 @@
     <tbody>
 @foreach (var item in Model.PaginatedProperty) {
         <tr>
+            <td>
+                <img src="data:image/png;base64,@Convert.ToBase64String(item.Image)">
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
