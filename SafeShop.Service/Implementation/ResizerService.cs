@@ -13,9 +13,9 @@ namespace SafeShop.Service.Implementation
 {
     public class ResizerService : IResizerService
     {
-        public byte[] ResizeImage(byte[] img, int width = 480, int height = 480)
+        public byte[] ResizeImage(byte[] img, int width = 240, int height = 240)
         {
-            var image = Image.Load<Rgb24>(img);
+            var image = Image.Load<Rgba32>(img);
             image.Mutate(x => x.Resize(width, height));
             using (var ms = new MemoryStream())
             {
