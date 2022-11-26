@@ -21,13 +21,11 @@ namespace SafeShop.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<AddProductToCartResponse>> PostCartProductAsync([FromBody] CartProductPostDTO product,
-            [FromQuery] string id)
+        public async Task<ActionResult<AddProductToCartResponse>> PostCartProductAsync([FromBody] CartProductPostDTO product)
         {
             try
             {
-                Guid userId = string.IsNullOrEmpty(id) ? Guid.Empty : Guid.Parse(id);
-                Guid cartId = await cartProductService.PostCartProductAsync(product, userId);
+                Guid cartId = await cartProductService.PostCartProductAsync(product, product.UserID);
                 var response = new AddProductToCartResponse()
                 {
                     CartID = cartId

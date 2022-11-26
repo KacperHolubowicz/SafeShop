@@ -46,7 +46,8 @@ namespace SafeShop.Application.Controllers
             AddProductToCartRequest request = new AddProductToCartRequest()
             {
                 ProductID = Guid.Parse(productId),
-                Quantity = quantity
+                Quantity = quantity,
+                UserID = GetIdFromClaim()
             };
 
             if (Request.Cookies.ContainsKey("SID"))
@@ -69,6 +70,15 @@ namespace SafeShop.Application.Controllers
                 Response.Cookies.Append("SID", resp.CartID.ToString(), options);
             }
             return RedirectToAction("Index");
+        }
+
+        private Guid GetIdFromClaim()
+        {
+            if(User.HasClaim(c => c.Type == "ID"))
+            {
+                return Guid.Parse(User.Claims.FirstOrDefault(c => c.Type == "ID").Value);
+            }
+            return Guid.Empty;
         }
     }
 }

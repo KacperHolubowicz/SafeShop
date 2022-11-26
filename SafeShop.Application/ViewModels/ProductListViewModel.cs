@@ -1,11 +1,13 @@
-﻿namespace SafeShop.Application.ViewModels
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SafeShop.Application.ViewModels
 {
     public class ProductListViewModel
     {
         public Guid ID { get; set; }
-        public string Name { get; set; }
-        public string Category { get; set; }
-        public decimal Price { get; set; }
-        public byte[] Image { get; set; }
+        [Display(Name = "Nazwa")] public string Name { get; set; }
+        [Display(Name = "Kategoria")] public string Category { get; set; }
+        [Display(Name = "Cena")] public decimal Price { get; set; }
+        [Display(Name = "Obraz")] public byte[] Image { get; set; }
     }
 }

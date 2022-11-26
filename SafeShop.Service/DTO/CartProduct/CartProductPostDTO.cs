@@ -11,5 +11,6 @@ namespace SafeShop.Service.DTO.CartProduct
         public int Quantity { get; set; }
         public Guid ProductID { get; set; }
         public Guid? CartID { get; set; }
+        public Guid? UserID { get; set; } = Guid.Empty;
     }
 }

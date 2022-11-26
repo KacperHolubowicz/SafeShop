@@ -1,45 +1,20 @@
 ﻿@model SafeShop.Application.ViewModels.ProductListPageModel
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.PaginatedProperty.First().Image)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PaginatedProperty.First().Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PaginatedProperty.First().Category)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PaginatedProperty.First().Price)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.PaginatedProperty) {
-        <tr>
-            <td>
-                <img src="data:image/png;base64,@Convert.ToBase64String(item.Image)">
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.ActionLink("Szczegóły", "Details", new { id = item.ID })
-            </td>
-        </tr>
+@foreach(var item in Model.PaginatedProperty)
+{
+    <div class="row m-4 col-md-8 align-items-center" style="background-color: tan">
+        <div class="col-md-3">
+            <img src="data:image/png;base64,@Convert.ToBase64String(item.Image)" height="180" width="180">
+        </div>
+        <div class="col-md-5">
+            <h6>@Html.ActionLink(@item.Name, "Details", new {id = @item.ID})</h6>
+            <h6>@item.Category</h6>
+        </div>
+        <div class="col-md-4">
+            <h4>@item.Price PLN</h4>
+        </div>
+    </div>
 }
-    </tbody>
-</table>
 
 @{
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
@@ -56,3 +31,9 @@
    class="btn btn-default @nextDisabled">
     Następna strona
 </a>
+
+<style type="text/css">
+    .actionlink {
+        font-size: larger;
+    }
+</style>
