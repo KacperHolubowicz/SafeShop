@@ -3,45 +3,53 @@
 <h4>Przygotuj zamówienie</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-8 justify-content-center">
         <form asp-action="Index">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
+            <div class="order-group mb-3 p-3">
+                <h5 class="text-center">Dane osobowe:</h5>
+                <div class="row m-4 col-lg-8">
+                    <label asp-for="FirstName" class="col-md-6"></label>
+                    <input asp-for="FirstName" class="col-md-6" />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+                <div class="row m-4 col-md-8">
+                    <label asp-for="LastName" class="col-md-6"></label>
+                    <input asp-for="LastName" class="col-md-6" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+                <div class="row m-4 col-md-8">
+                    <label asp-for="Email" class="col-md-6"></label>
+                    <input asp-for="Email" class="col-md-6" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="row m-4 col-md-8">
+                    <label asp-for="PhoneNumber" class="col-md-6"></label>
+                    <input asp-for="PhoneNumber" class="col-md-6" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
+
+            <div class="order-group mb-3 p-3">
+                <h5 class="text-center">Dane do wysyłki:</h5>
+                <div class="row m-4 col-md-8">
+                    <label asp-for="Town" class="col-md-6"></label>
+                    <input asp-for="Town" class="col-md-6" />
+                    <span asp-validation-for="Town" class="text-danger"></span>
+                </div>
+                <div class="row m-4 col-lg-8">
+                    <label asp-for="Street" class="col-md-6"></label>
+                    <input asp-for="Street" class="col-md-6" />
+                    <span asp-validation-for="Street" class="text-danger"></span>
+                </div>
+                <div class="row m-4 col-md-8">
+                    <label asp-for="ZipCode" class="col-md-6"></label>
+                    <input asp-for="ZipCode" class="col-md-6" />
+                    <span asp-validation-for="ZipCode" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PhoneNumber" class="control-label"></label>
-                <input asp-for="PhoneNumber" class="form-control" />
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Town" class="control-label"></label>
-                <input asp-for="Town" class="form-control" />
-                <span asp-validation-for="Town" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Street" class="control-label"></label>
-                <input asp-for="Street" class="form-control" />
-                <span asp-validation-for="Street" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ZipCode" class="control-label"></label>
-                <input asp-for="ZipCode" class="form-control" />
-                <span asp-validation-for="ZipCode" class="text-danger"></span>
-            </div>
-            <div class="form-group">
+
+            <div class="form-group d-flex justify-content-center">
                 <input type="submit" value="Przejdź do płatności" class="btn btn-primary" />
             </div>
         </form>
@@ -51,3 +59,11 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+<style type="text/css">
+    .order-group {
+        border: 2px solid;
+        border-color: #0887cc;
+        border-radius: 25px;
+    }
+</style>

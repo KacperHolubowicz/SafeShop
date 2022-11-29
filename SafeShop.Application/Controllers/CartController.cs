@@ -30,6 +30,7 @@ namespace SafeShop.Application.Controllers
             return View(cart);
         }
 
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Delete(Guid id)
         {
             var httpClient = factory.CreateClient("SafeShopClient");
@@ -38,6 +39,8 @@ namespace SafeShop.Application.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> EditQuantity(string quantity, Guid productId)
         {
             var httpClient = factory.CreateClient("SafeShopClient");

@@ -23,6 +23,7 @@ namespace SafeShop.Application.Controllers
         }
 
         [HttpPost]
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Index(OrderDataViewModel order)
         {
             var httpClient = factory.CreateClient("SafeShopClient");

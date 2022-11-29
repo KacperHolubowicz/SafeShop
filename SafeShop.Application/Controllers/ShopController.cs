@@ -41,6 +41,8 @@ namespace SafeShop.Application.Controllers
             return View(product);
         }
 
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> AddToCart(int quantity, string productId)
         {
             AddProductToCartRequest request = new AddProductToCartRequest()

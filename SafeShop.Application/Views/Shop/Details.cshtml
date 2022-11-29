@@ -10,49 +10,49 @@
             <dt class = "col-sm-3">
                 @Html.DisplayNameFor(model => model.Name)
             </dt>
-            <dd class = "col-sm-8">
+            <dd class = "col-sm-7">
                 @Html.DisplayFor(model => model.Name)
             </dd>
             <dt class = "col-sm-3">
                 @Html.DisplayNameFor(model => model.Description)
             </dt>
-            <dd class = "col-sm-8">
+            <dd class = "col-sm-7">
                 @Html.DisplayFor(model => model.Description)
             </dd>
             <dt class = "col-sm-3">
                 @Html.DisplayNameFor(model => model.Category)
             </dt>
-            <dd class = "col-sm-8">
+            <dd class = "col-sm-7">
                 @Html.DisplayFor(model => model.Category)
             </dd>
             <dt class = "col-sm-3">
                 @Html.DisplayNameFor(model => model.Price)
             </dt>
-            <dd class = "col-sm-8">
+            <dd class = "col-sm-7">
                 @Html.DisplayFor(model => model.Price) PLN
             </dd>
          </dl>
     </div>
 </div>
 
-<div class="row flex-md-row mt-2">
+<div class="mt-2">
     @if(!Model.IsInCart)
     {
-        <form asp-controller="Shop" asp-action="AddToCart" method="post">
-            <div class="mt-2 mb-2">
-                <label class="mb-1">Wybierz ilość produktu</label>
+        <form asp-controller="Shop" asp-action="AddToCart" method="post" class="align-items-center">
+            <div class="mt-2 mb-2 d-flex justify-content-sm-center">
+                <label>Wybierz ilość produktu</label>
                 <input type="number" name="quantity" value="1" step="1" min="1" max="10"/>
             </div>
             <input type="hidden" name="productId" value=@Model.ID />
-             <div>
-                <input type="submit" value="Dodaj do koszyka"/>
+            <div class="d-flex justify-content-center">
+                <input type="submit" value="Dodaj do koszyka" class="btn btn-primary"/>
             </div>
         </form>
     } else 
     {
-        <p>Ten produkt już jest w twoim koszyku</p>
+        <p class="d-flex justify-content-center">Ten produkt już jest w twoim koszyku</p>
     }
-    <div>
-        <a asp-action="Index">Do listy produktów</a>
+    <div class="d-flex justify-content-center mt-2">
+        <a asp-action="Index" class="btn btn-secondary">Do listy produktów</a>
     </div>
 </div>
