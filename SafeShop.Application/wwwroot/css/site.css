@@ -21,3 +21,9 @@ body {
 a {
     font-size: 16px;
 }
+
+.form-group {
+    border: 2px solid;
+    border-color: #0887cc;
+    border-radius: 25px;
+}

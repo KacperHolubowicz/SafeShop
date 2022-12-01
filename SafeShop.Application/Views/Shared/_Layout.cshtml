@@ -30,9 +30,21 @@
                         </li>
                     </ul>
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-controller="" asp-action="">Zaloguj się</a>
-                        </li>
+                        @if (!User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-controller="Login" asp-action="Index">Logowanie</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-controller="Register" asp-action="Index">Rejestracja</a>
+                            </li>
+                        } 
+                        else 
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-controller="Login" asp-action="Logout">Wyloguj</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
