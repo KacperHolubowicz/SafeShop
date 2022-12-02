@@ -1,5 +1,9 @@
 ﻿@model SafeShop.Application.ViewModels.LoginFormViewModel
 
+@{
+    var message = TempData["RegisterMessage"].ToString();
+}
+
 <h4>Zaloguj się</h4>
 <hr />
 <div class="row">
@@ -28,6 +32,12 @@
         </div>
     </div>
 </div>
+@if (message != null)
+{
+    <div class="row mt-2 fixed-bottom">
+        <h4 class="alert alert-success">@message</h4>
+    </div>
+}
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

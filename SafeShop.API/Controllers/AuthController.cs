@@ -10,7 +10,6 @@ namespace SafeShop.API.Controllers
     [AllowAnonymous]
     [Route("api/[controller]")]
     [ApiController]
-    //TODO add JWT service
     public class AuthController : ControllerBase
     {
         private readonly IUserService userService;
