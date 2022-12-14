@@ -28,6 +28,11 @@
                         <li class="nav-item pl-3">
                             <a class="nav-link text-light" asp-area="" asp-controller="Cart" asp-action="Index">Koszyk</a>
                         </li>
+                        @if (User.Identity.IsAuthenticated) {
+                        <li class="nav-item pl-3">
+                            <a class="nav-link text-light" asp-area="" asp-controller="OrderList" asp-action="Index">Lista zamówień</a>
+                        </li>
+                        }
                     </ul>
                     <ul class="navbar-nav ml-auto">
                         @if (!User.Identity.IsAuthenticated)

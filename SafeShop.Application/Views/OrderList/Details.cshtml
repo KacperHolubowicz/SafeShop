@@ -1,0 +1,54 @@
+﻿@model SafeShop.Application.ViewModels.OrderList.OrderViewModel
+
+<h4>Szczegóły zamówienia</h4>
+<div>
+    <p class="fw-bold">Produkty:</p>
+    @foreach(var product in Model.Products) 
+    {
+        <div class="row col-lg-5 form-group">
+            <div class=" d-flex justify-content-left">
+                <div class="col-md-3">
+                    <h6>@product.ProductName</h6>
+                </div>
+                <div class="col-md-3">
+                    <h6>Ilość: @product.Quantity sztuk</h6>
+                </div>
+                <div class="col-md-4">
+                    <h6>Cena: @product.Total zł</h6>
+                </div>
+            </div>
+        </div>
+    }
+    <p>Suma: @Model.Total zł</p>
+</div>
+
+
+
+<div class="d-flex justify-content-end align-items-center">
+    <div class="col-md-3 form-group">
+        <p class="text-center fw-bold">Dane zamówienia</p>
+        <div class="row">
+            <p class="text-center">Imię i nazwisko: @Model.Details.Shipping.FirstName @Model.Details.Shipping.LastName</p>
+        </div>
+        <div class="row">
+            <p class="text-center">Adres dostawy: @Model.Details.Shipping.Town, @Model.Details.Shipping.Street, @Model.Details.Shipping.ZipCode</p>
+        </div>
+    </div>
+
+    <div class="col-md-3 form-group">
+        <p class="text-center fw-bold">Dane płatności</p>
+        <div class="row">
+            <p class="text-center">Imię i nazwisko: @Model.Details.Billing.FirstName @Model.Details.Billing.LastName</p>
+        </div>
+        <div class="row">
+            <p class="text-center">Email: @Model.Details.Billing.Email</p>
+        </div>
+        <div class="row">
+            <p class="text-center">Telefon: @Model.Details.Billing.PhoneNumber</p>
+        </div>
+    </div>
+</div>
+
+<div class="d-flex mt-lg-5 justify-content-center align-items-center">
+    <h4 class="text-center">Status: @Model.Details.Status</h4>
+</div>

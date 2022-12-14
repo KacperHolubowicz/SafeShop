@@ -68,6 +68,7 @@ namespace SafeShop.Application.Controllers
                 CookieOptions options = new CookieOptions();
                 options.HttpOnly = true;
                 options.Secure = true;
+                options.SameSite = SameSiteMode.Lax;
                 options.Expires = DateTimeOffset.UtcNow.AddDays(7);
                 Response.Cookies.Append("SID", resp.CartID.ToString(), options);
             }

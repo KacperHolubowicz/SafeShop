@@ -1,0 +1,16 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<h4>Wyloguj się</h4>
+
+<div class="row">
+    <form method="post" asp-controller="Login" asp-action="SignOut">
+        <label>Czy jesteś pewien, że chcesz się wylogować?</label>
+        <div>
+            <input type="submit" value="Wyloguj" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
