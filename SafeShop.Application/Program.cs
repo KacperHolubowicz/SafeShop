@@ -30,19 +30,34 @@ namespace SafeShop.Application
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-            if (!app.Environment.IsDevelopment())
-            {
-                app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
-
+            app.UseExceptionHandler("/Home/Error");
+            app.UseHsts();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.Use(async (context, next) =>
+            {
+                context.Response.Headers.Add("Content-Security-Policy",
+                    "default-src 'self' wss://localhost:44377/SafeShop.Application/ data:; script-src 'self'; style-src 'self'; font-src 'self'; frame-src 'self'; frame-ancestors 'self'; form-action 'self'");
+                await next();
+            });
+
+            app.Use(async (context, next) =>
+            {
+                context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
+                await next();
+            });
+
+            app.Use(async (context, next) =>
+            {
+                context.Response.Headers.Remove("Server");
+                context.Response.Headers.Add("Server", "Server");
+                await next();
+            });
 
             app.MapControllerRoute(
                 name: "default",

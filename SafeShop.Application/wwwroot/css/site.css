@@ -27,3 +27,36 @@ a {
     border-color: #0887cc;
     border-radius: 25px;
 }
+
+.safeshop-menu {
+    background-color: #8AAAE5;
+}
+
+.actionlink {
+    font-size: larger;
+}
+
+.product-row {
+    background-color: #8AAAE5;
+    -webkit-transition: background-color 1.5s;
+    -moz-transition: background-color 1.5s;
+    -ms-transition: background-color 1.5s;
+    -o-transition: background-color 1.5s;
+    transition: background-color 1.5s;
+    border: 1px solid;
+    border-radius: 25px;
+    border-color: #0887cc;
+}
+
+.product-image {
+    height: 180px;
+    width: 180px;
+}
+
+.product-row:hover {
+    background-color: #a9c4f5;
+}
+
+.product-row:mouseout {
+    background-color: #8AAAE5;
+}

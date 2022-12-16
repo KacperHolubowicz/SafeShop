@@ -38,7 +38,7 @@
 <div class="mt-2">
     @if(!Model.IsInCart)
     {
-        <form asp-controller="Shop" asp-action="AddToCart" method="post" class="align-items-center">
+        <form method="post" asp-controller="Shop" asp-action="AddToCart" class="align-items-center">
             <div class="mt-2 mb-2 d-flex justify-content-sm-center">
                 <label>Wybierz ilość produktu</label>
                 <input type="number" name="quantity" value="1" step="1" min="1" max="10"/>

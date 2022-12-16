@@ -40,9 +40,9 @@ namespace SafeShop.Application.Controllers
             var product = JsonConvert.DeserializeObject<ProductDetailsPageModel>(content);
             return View(product);
         }
-
-        [HttpPost]
+        
         [AutoValidateAntiforgeryToken]
+        [HttpPost]
         public async Task<IActionResult> AddToCart(int quantity, string productId)
         {
             AddProductToCartRequest request = new AddProductToCartRequest()
