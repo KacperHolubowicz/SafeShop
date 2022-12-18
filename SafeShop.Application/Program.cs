@@ -59,6 +59,12 @@ namespace SafeShop.Application
                 await next();
             });
 
+            app.Use(async (context, next) =>
+            {
+                context.Response.Headers.Add("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
+                await next();
+            });
+
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
