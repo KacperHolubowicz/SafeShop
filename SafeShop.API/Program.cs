@@ -101,16 +101,6 @@ namespace SafeShop.API
                 app.UseSwaggerUI();
             }
 
-            app.Use(async (context, next) =>
-            {
-                var token = context.Request.Cookies["Token"];
-                if (!string.IsNullOrEmpty(token))
-                {
-                    context.Request.Headers.Add("Authorization", "Bearer " + token);
-                }
-                await next();
-            });
-
             app.UseHttpsRedirection();
 
             app.UseAuthorization();

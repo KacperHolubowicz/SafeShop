@@ -24,7 +24,7 @@ namespace SafeShop.Application
                     options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
                     options.Cookie.Name = "user_cookie";
                     options.Cookie.SameSite = SameSiteMode.Strict;
-                    options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+                    //options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
                 });
 
             var app = builder.Build();
@@ -42,7 +42,17 @@ namespace SafeShop.Application
             app.Use(async (context, next) =>
             {
                 context.Response.Headers.Add("Content-Security-Policy",
-                    "default-src 'self' wss://localhost:44377/SafeShop.Application/ data:; script-src 'self'; style-src 'self'; font-src 'self'; frame-src 'self'; frame-ancestors 'self'; form-action 'self'");
+                    "default-src 'self' wss://localhost:44377/SafeShop.Application/ https://checkout.stripe.com data:; script-src 'self' https://checkout.stripe.com; style-src 'self'; font-src 'self'; frame-src 'self' https://checkout.stripe.com; frame-ancestors 'self'; form-action 'self' https://checkout.stripe.com;");
+                await next();
+            });
+
+            app.Use(async (context, next) =>
+            {
+                var token = context.Request.Cookies["Token"];
+                if (!string.IsNullOrEmpty(token))
+                {
+                    context.Request.Headers.Add("Authorization", "Bearer " + token);
+                }
                 await next();
             });
 
