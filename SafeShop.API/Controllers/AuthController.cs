@@ -51,7 +51,7 @@ namespace SafeShop.API.Controllers
                 return Ok(token);
             } catch(InvalidCredentialsException ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             } catch (Exception ex2)
             {
                 logger.LogError(ex2.StackTrace);

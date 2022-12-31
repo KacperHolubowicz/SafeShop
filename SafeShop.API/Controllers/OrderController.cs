@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SafeShop.Service.DTO.Order;
 using SafeShop.Service.Exceptions;
@@ -19,12 +21,13 @@ namespace SafeShop.API.Controllers
             this.logger = logger;
         }
 
-        [HttpGet("{userId}")]
-        public async Task<ActionResult<IEnumerable<OrderListDTO>>> GetOrdersAsync([FromRoute] string userId) 
+        [HttpGet("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ResourceClaim")]
+        public async Task<ActionResult<IEnumerable<OrderListDTO>>> GetOrdersAsync([FromRoute] string id) 
         {
             try
             {
-                Guid guid = Guid.Parse(userId);
+                Guid guid = Guid.Parse(id);
                 var orders = await orderService.GetOrdersAsync(guid);
                 return Ok(orders);
             }
@@ -44,12 +47,13 @@ namespace SafeShop.API.Controllers
             }
         }
 
-        [HttpGet("{userId}/{orderId}")]
-        public async Task<ActionResult<OrderGetDTO>> GetOrderAsync([FromRoute] string userId, [FromRoute] string orderId)
+        [HttpGet("{id}/{orderId}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "ResourceClaim")]
+        public async Task<ActionResult<OrderGetDTO>> GetOrderAsync([FromRoute] string id, [FromRoute] string orderId)
         {
             try
             {
-                Guid userGuid = Guid.Parse(userId);
+                Guid userGuid = Guid.Parse(id);
                 Guid orderGuid = Guid.Parse(orderId);
                 var order = await orderService.GetOrderAsync(orderGuid, userGuid);
                 return Ok(order);

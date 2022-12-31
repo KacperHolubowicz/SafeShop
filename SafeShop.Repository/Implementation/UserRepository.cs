@@ -64,8 +64,13 @@ namespace SafeShop.Repository.Implementation
 
         public async Task<byte[]> GetSaltAsync(string login)
         {
-            byte[] salt = await Task.FromResult(context.Users.FirstOrDefault(u => u.Login == login).Salt);
-            return salt;
+            User user = context.Users.FirstOrDefault(u => u.Login == login);
+            if(user == null)
+            {
+                return null;
+            }
+            byte[] salt = user.Salt;
+            return await Task.FromResult(salt);
         }
 
         public async Task<User> VerifyCredentialsAsync(string login, byte[] password)

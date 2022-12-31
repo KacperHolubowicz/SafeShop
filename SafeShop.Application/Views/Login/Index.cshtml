@@ -2,6 +2,7 @@
 
 @{
     var message = TempData["RegisterMessage"];
+    var error = TempData["ErrorMessage"];
 }
 
 <h4>Zaloguj się</h4>
@@ -36,6 +37,13 @@
 {
     <div class="row mt-2 fixed-bottom">
         <h4 class="alert alert-success">@message</h4>
+    </div>
+}
+
+@if (error != null)
+{
+    <div class="row mt-2 fixed-bottom">
+        <h4 class="alert alert-warning">@error</h4>
     </div>
 }
 

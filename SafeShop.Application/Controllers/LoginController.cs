@@ -29,7 +29,11 @@ namespace SafeShop.Application.Controllers
             string jsonBody = JsonConvert.SerializeObject(loginForm);
             StringContent body = new StringContent(jsonBody, encoding: System.Text.Encoding.UTF8, "application/json");
             var response = await client.PostAsync("auth/login", body);
-            response.EnsureSuccessStatusCode();
+            if(!response.IsSuccessStatusCode)
+            {
+                TempData["ErrorMessage"] = "Nieprawidłowe dane logowania. Sprawdź, czy nie masz wciśniętego klawisza Caps-Lock.";
+                return View();
+            }
             string token = await response.Content.ReadAsStringAsync();
             TokenToCookie(token);
             await SetClaims(token);
