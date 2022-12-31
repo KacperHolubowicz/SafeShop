@@ -1,15 +1,9 @@
-﻿using AutoMapper;
-using SafeShop.Core.Model;
+﻿using SafeShop.Core.Model;
 using SafeShop.Repository.Infrastructure;
 using SafeShop.Service.DTO.Cart;
 using SafeShop.Service.DTO.CartProduct;
 using SafeShop.Service.Exceptions;
 using SafeShop.Service.Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SafeShop.Service.Implementation
 {

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SafeShop.Core.Model
+﻿namespace SafeShop.Core.Model
 {
     public class OrderDetails
     {

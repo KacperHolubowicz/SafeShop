@@ -1,6 +1,4 @@
-using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using SafeShop.Repository.DataAccess;
@@ -10,8 +8,6 @@ using SafeShop.Repository.Infrastructure;
 using SafeShop.Service.DTO.Auth;
 using SafeShop.Service.Implementation;
 using SafeShop.Service.Infrastructure;
-using Stripe;
-using System.Configuration;
 using System.Security.Claims;
 using System.Text;
 
@@ -100,7 +96,7 @@ namespace SafeShop.API
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
+            app.UseHsts();
             app.UseHttpsRedirection();
 
             app.UseAuthorization();

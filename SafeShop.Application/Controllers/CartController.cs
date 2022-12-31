@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SafeShop.Application.Requests;
-using SafeShop.Application.Responses;
 using SafeShop.Application.ViewModels;
 using System.Net.Http.Headers;
 

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SafeShop.Service.DTO.Product
+﻿namespace SafeShop.Service.DTO.Product
 {
     public class ProductGetDTO
     {

@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.Extensions.Logging;
 using SafeShop.Core.Model;
 using SafeShop.Repository.Encryption;
 using SafeShop.Repository.Infrastructure;

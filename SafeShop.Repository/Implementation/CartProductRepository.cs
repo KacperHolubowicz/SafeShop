@@ -2,11 +2,6 @@
 using SafeShop.Core.Model;
 using SafeShop.Repository.DataAccess;
 using SafeShop.Repository.Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SafeShop.Repository.Implementation
 {

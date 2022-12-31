@@ -1,13 +1,10 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.IdentityModel.Tokens;
 using SafeShop.Core.Model;
 using SafeShop.Repository.Encryption;
 using SafeShop.Repository.Infrastructure;
 using SafeShop.Service.DTO.Auth;
 using SafeShop.Service.DTO.User;
-using SafeShop.Service.Exceptions;
 using SafeShop.Service.Infrastructure;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;

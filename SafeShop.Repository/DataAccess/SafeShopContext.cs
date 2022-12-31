@@ -1,11 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SafeShop.Core.Model;
 using Microsoft.Extensions.Configuration;
+using SafeShop.Core.Model;
 using SafeShop.Repository.Encryption;
 
 namespace SafeShop.Repository.DataAccess

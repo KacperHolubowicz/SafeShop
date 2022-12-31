@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SafeShop.API.Responses;
 using SafeShop.Service.DTO.Payment;
 using Stripe;
