@@ -12,8 +12,6 @@ namespace SafeShop.Core.Model
         public string Login { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "To pole jest wymagane")]
-        [MinLength(6, ErrorMessage = "Hasło wymaga co najmniej 6 znaków")]
-        [MaxLength(30, ErrorMessage = "Hasło nie może być dłuższe od 30 znaków")]
         public byte[] Password { get; set; } = default!;
 
         [Required(ErrorMessage = "To pole jest wymagane")]

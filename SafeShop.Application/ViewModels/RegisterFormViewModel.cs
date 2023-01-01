@@ -12,7 +12,7 @@ namespace SafeShop.Application.ViewModels
 
         [Required(ErrorMessage = "To pole jest wymagane")]
         [Display(Name = "Hasło")]
-        [StrongPassword(6, 30)]
+        [StrongPassword(10, 30)]
         public string Password { get; set; }
 
         [Required(ErrorMessage = "To pole jest wymagane")]

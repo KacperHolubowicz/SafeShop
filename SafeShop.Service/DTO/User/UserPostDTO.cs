@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using SafeShop.Application.ViewModels.Attributes;
+using System.ComponentModel.DataAnnotations;
 
 namespace SafeShop.Service.DTO.User
 {
@@ -10,9 +11,12 @@ namespace SafeShop.Service.DTO.User
         public string Login { get; set; }
 
         [Required(ErrorMessage = "To pole jest wymagane")]
-        [MinLength(6, ErrorMessage = "Hasło wymaga co najmniej 6 znaków")]
-        [MaxLength(30, ErrorMessage = "Hasło nie może być dłuższe od 30 znaków")]
+        [StrongPassword(10, 30)]
         public string Password { get; set; }
+
+        [Required(ErrorMessage = "To pole jest wymagane")]
+        [PasswordConfirmation]
+        public string RepeatPassword { get; set; }
 
         [Required(ErrorMessage = "To pole jest wymagane")]
         [MaxLength(60, ErrorMessage = "Prosimy stosować email krótszy niż 60 znaków")]
