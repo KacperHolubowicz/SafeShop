@@ -45,6 +45,7 @@ namespace SafeShop.API.Controllers
         {
             try
             {
+                Thread.Sleep(4000);
                 var user = await loginService.LoginAsync(credentials);
                 string token = loginService.GenerateJWT(user);
                 return Ok(token);
