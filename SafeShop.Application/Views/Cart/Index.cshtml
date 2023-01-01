@@ -20,37 +20,37 @@
             <th></th>
         </tr>
     </thead>
-    <tbody>
-@foreach (var item in Model.Products) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductName)
-            </td>
-            <td>
-                <form method="post" asp-controller="Cart" asp-action="EditQuantity">
-                    <input type="hidden" name="productId" value=@item.ID>
-                    <select onchange="this.form.submit()" name="quantity">
-                        @for(int i = 1; i <= 10; i++)
-                        {
-                            if (i == item.Quantity)
+    <tbody id="quantityChange">
+        @foreach (var item in Model.Products) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td>
+                    <form method="post" asp-controller="Cart" asp-action="EditQuantity">
+                        <input type="hidden" name="productId" value=@item.ID>
+                        <select name="quantity">
+                            @for(int i = 1; i <= 10; i++)
                             {
-                                <option selected value=@i>@i</option>
-                            } else
-                            {
-                                <option value=@i>@i</option>
+                                if (i == item.Quantity)
+                                {
+                                    <option selected value=@i>@i</option>
+                                } else
+                                {
+                                    <option value=@i>@i</option>
+                                }
                             }
-                        }
-                        </select>
-                </form>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Total)
-            </td>
-            <td>
-                @Html.ActionLink("Usuń produkt", "Delete", new { id = item.ID})
-            </td>
-        </tr>
-}
+                            </select>
+                    </form>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Total)
+                </td>
+                <td>
+                    @Html.ActionLink("Usuń produkt", "Delete", new { id = item.ID})
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
 <div class="ml-lg-2">

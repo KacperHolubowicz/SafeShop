@@ -6,7 +6,8 @@
     <h1 class="display-2">Strona główna SafeShop</h1>
     @if(User.Identity.IsAuthenticated)
     {
-        <h2>Good to see you, @User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.Surname).Value</h2>
+        string surname = User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.Surname).Value;
+        <h2>Good to see you, @surname</h2>
     }
     <p class="pt-3 text-lg-center">Projekt bezpiecznego sklepu internetowego wykonany przez Kacpra Hołubowicza</p>
 </div>

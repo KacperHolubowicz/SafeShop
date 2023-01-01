@@ -2,3 +2,10 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
+
+document.getElementById('quantityChange').addEventListener('change', function (event) {
+    var elem = event.target;
+    if (elem.name === 'quantity') {
+        elem.form.submit();
+    }
+})

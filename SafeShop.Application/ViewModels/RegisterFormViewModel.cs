@@ -28,11 +28,13 @@ namespace SafeShop.Application.ViewModels
         [Required(ErrorMessage = "To pole jest wymagane")]
         [Display(Name = "Imię")]
         [MaxLength(40, ErrorMessage = "Nie powinieneś podawać więcej niż 40 znaków swojego imienia")]
+        [RegularExpression("^[a-zA-Z -]+$", ErrorMessage = "Prosimy podawać tylko litery")]
         public string FirstName { get; set; }
 
         [Required(ErrorMessage = "To pole jest wymagane")]
         [Display(Name = "Nazwisko")]
         [MaxLength(50, ErrorMessage = "Nie powinieneś podawać więcej niż 40 znaków swojego nazwiska")]
+        [RegularExpression("^[a-zA-Z -]+$", ErrorMessage = "Prosimy podawać tylko litery")]
         public string LastName { get; set; }
     }
 }

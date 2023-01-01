@@ -42,7 +42,7 @@ namespace SafeShop.Application
             app.Use(async (context, next) =>
             {
                 context.Response.Headers.Add("Content-Security-Policy",
-                    "default-src 'self' wss://localhost:44377/SafeShop.Application/ https://checkout.stripe.com data:; script-src 'self' https://checkout.stripe.com; style-src 'self'; font-src 'self'; frame-src 'self' https://checkout.stripe.com; frame-ancestors 'self'; form-action 'self' https://checkout.stripe.com;");
+                    "default-src 'self'; img-src data: https://*.stripe.com; script-src 'self' https://checkout.stripe.com; style-src 'self'; font-src 'self'; frame-src 'self' https://checkout.stripe.com; frame-ancestors 'none'; form-action 'self' https://checkout.stripe.com; connect-src https://checkout.stripe.com  wss://localhost:*/SafeShop.Application/;");
                 await next();
             });
 
